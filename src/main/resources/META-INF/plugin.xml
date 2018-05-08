@@ -1,0 +1,28 @@
+<idea-plugin>
+    <id>com.interfaced.cutejs.plugin.support</id>
+    <name>CuteJS templates support</name>
+    <version>0.1</version>
+    <vendor email="reefridge@ifaced.ru" url="http://interfaced.com">Interfaced</vendor>
+
+    <description><![CDATA[
+      CuteJS Template lang support.
+    ]]></description>
+
+    <change-notes><![CDATA[
+      Initial release: v0.1
+      Features:
+        * Syntax highlighting
+    ]]>
+    </change-notes>
+
+    <idea-version since-build="173.0"/>
+    <depends>com.intellij.modules.lang</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <fileTypeFactory implementation="org.cutejs.lang.CuteFileTypeFactory"/>
+        <lang.parserDefinition language="CuteJSTemplate" implementationClass="org.cutejs.lang.parser.CuteParserDefinition"/>
+        <lang.syntaxHighlighterFactory language="CuteJSTemplate" implementationClass="org.cutejs.ide.highlight.CuteHighlighterFactory"/>
+        <editorHighlighterProvider filetype="CuteJSTemplate" implementationClass="org.cutejs.ide.highlight.CuteEditorHighlighterProvider"/>
+        <fileType.fileViewProviderFactory filetype="CuteJSTemplate" implementationClass="org.cutejs.file.CuteFileViewProviderFactory"/>
+    </extensions>
+</idea-plugin>

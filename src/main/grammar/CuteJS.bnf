@@ -1,0 +1,37 @@
+{
+  parserClass="org.cutejs.lang.parser.CuteParser"
+  parserUtilClass="org.cutejs.lang.parser.CuteParserUtil"
+
+  elementTypeHolderClass="org.cutejs.lang.psi.CuteTypes"
+  elementTypeClass="org.cutejs.lang.psi.CuteCompositeElementType"
+  tokenTypeClass="org.cutejs.lang.psi.CuteTokenType"
+
+  psiClassPrefix="JST"
+  psiImplClassSuffix="Impl"
+  psiPackage="org.cutejs.lang.psi"
+  psiImplPackage="org.cutejs.lang.psi.impl"
+}
+
+JSTemplate ::= item_*
+
+private item_ ::= (
+      block_statement
+    | block_open_statement
+    | block_close_statement
+    | T_TEMPLATE_HTML_CODE
+    | T_TEMPLATE_JAVASCRIPT_CODE
+    | COMMENT
+)
+
+private block_statement ::= block_open_statement T_TEMPLATE_JAVASCRIPT_CODE* block_close_statement{pin=2}
+
+block_open_statement ::=
+      T_OPEN_BLOCK_MARKER
+    | T_OPEN_BLOCK_MARKER_UNESCAPED
+    | T_OPEN_BLOCK_MARKER_ESCAPED
+    | T_OPEN_BLOCK_MARKER_NAMESPACE_DECLARATION
+    | T_OPEN_BLOCK_MARKER_VAR_TYPE_DECLARATION
+    | T_OPEN_BLOCK_MARKER_EXPORT_DATA
+    | T_OPEN_BLOCK_MARKER_INLINE
+    | T_OPEN_BLOCK_MARKER_INCLUDE
+block_close_statement ::= T_CLOSE_BLOCK_MARKER
