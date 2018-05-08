@@ -1,6 +1,6 @@
 <idea-plugin>
     <id>com.interfaced.cutejs.plugin.support</id>
-    <name>CuteJS templates support</name>
+    <name>CuteJS</name>
     <version>0.1</version>
     <vendor email="reefridge@ifaced.ru" url="http://interfaced.com">Interfaced</vendor>
 
@@ -8,12 +8,7 @@
       CuteJS Template lang support.
     ]]></description>
 
-    <change-notes><![CDATA[
-      Initial release: v0.1
-      Features:
-        * Syntax highlighting
-    ]]>
-    </change-notes>
+    <change-notes></change-notes>
 
     <idea-version since-build="173.0"/>
     <depends>com.intellij.modules.lang</depends>

@@ -87,7 +87,8 @@ intellij {
 
 patchPluginXml {
     changeNotes """
-      Initial release [v0.1]<br>
-      * Layered syntax highlight
+      Initial release.<br>
+      Features:<br>
+      * Layered syntax highlighting
       """
 }
