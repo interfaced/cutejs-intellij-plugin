@@ -1,6 +1,6 @@
 # CuteJS IntelliJ plugin
 
-##Info
+## Info
 
 Associated extension is **.jst**
 
