@@ -28,7 +28,7 @@ class CuteBlockTypedHandler : TypedHandlerDelegate() {
         if (previousChars == delimiters.first) {
             val elementAt = file.viewProvider.findElementAt(offset, CuteLanguage.INSTANCE)
 
-            if (elementAt?.text?.contains("}}") != null) {
+            if (elementAt != null && elementAt.text.contains("}}")) {
                 return Result.CONTINUE
             }
 
