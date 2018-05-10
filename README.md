@@ -20,6 +20,14 @@ Associated extension is **.jst**
 
 - No tests
 
+## Install
+
+### From zip/jar bundle
+
+1. Download plugin zip archive from [releases](https://github.com/interfaced/cutejs-intellij-plugin/releases) page or build it from source
+2. In your IDE open `Preferences -> Plugins`
+3. Choose plugin archive by `Install plugin from disk...`
+
 ## Build
 
 For build and bundle plugin in zip archive
