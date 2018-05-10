@@ -30,7 +30,7 @@ Associated extension is **.jst**
 
 ## Build
 
-For build and bundle plugin in zip archive
+For build and bundle plugin in zip archive (will located in `build/distributions`)
 
 ```
 ./gradlew buildPlugin
