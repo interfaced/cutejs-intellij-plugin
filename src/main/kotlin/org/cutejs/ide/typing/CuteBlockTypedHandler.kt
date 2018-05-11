@@ -9,14 +9,34 @@ import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiFile
 
 import org.cutejs.lang.CuteLanguage
+import org.cutejs.lang.parser.CuteParserDefinition
 import org.cutejs.lang.psi.CuteFile
+import org.cutejs.lang.psi.CuteTypes
 
 class CuteBlockTypedHandler : TypedHandlerDelegate() {
-    override fun beforeCharTyped(c: Char, project: Project, editor: Editor, file: PsiFile, fileType: FileType): Result {
+    override fun charTyped(c: Char, project: Project, editor: Editor, file: PsiFile): Result {
         if (file !is CuteFile) return Result.CONTINUE
         val offset = editor.caretModel.offset
 
-        val delimiters = Pair.create("{", "}}")
+        val blockOpenSymbols = arrayOf(' ', '@', '$', '=', '-', '%', '*', '#')
+
+        if (c in blockOpenSymbols) {
+            val elementAt = file.viewProvider.findElementAt(offset, CuteLanguage.INSTANCE)
+
+            if (elementAt != null && elementAt.node.elementType == CuteTypes.T_CLOSE_BLOCK_MARKER && CuteParserDefinition.OPEN_BLOCK_MARKERS.contains(elementAt.parent.prevSibling.node.elementType)) {
+                if (c != ' ') {
+                    editor.document.insertString(offset, "  ")
+                    editor.caretModel.moveToOffset(offset + 1)
+                } else {
+                    editor.document.insertString(offset, " ")
+                    editor.caretModel.moveToOffset(offset)
+                }
+
+                return Result.CONTINUE
+            }
+        }
+
+        val delimiters = Pair.create("{{", "}}")
         val openBraceLength = (delimiters.first as String).length
 
         if (offset < openBraceLength) {
