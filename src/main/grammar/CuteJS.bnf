@@ -20,6 +20,8 @@ private item_ ::= (
     | block_close_statement
     | T_TEMPLATE_HTML_CODE
     | T_TEMPLATE_JAVASCRIPT_CODE
+    | T_INNER_TEMPLATE_ELEMENT
+    | T_OUTER_TEMPLATE_ELEMENT
     | COMMENT
 )
 
