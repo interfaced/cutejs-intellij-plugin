@@ -22,6 +22,6 @@
         <lang.braceMatcher language="CuteJSTemplate" implementationClass="org.cutejs.ide.typing.CuteBraceMatcher"/>
         <typedHandler implementation="org.cutejs.ide.typing.CuteBlockTypedHandler"/>
         <editorHighlighterProvider filetype="CuteJSTemplate" implementationClass="org.cutejs.ide.highlight.CuteEditorHighlighterProvider"/>
-        <fileType.fileViewProviderFactory filetype="CuteJSTemplate" implementationClass="org.cutejs.file.CuteFileViewProviderFactory"/>
+        <lang.fileViewProviderFactory language="CuteJSTemplate" implementationClass="org.cutejs.file.CuteFileViewProviderFactory"/>
     </extensions>
 </idea-plugin>
