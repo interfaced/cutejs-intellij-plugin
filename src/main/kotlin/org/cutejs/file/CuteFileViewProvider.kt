@@ -82,7 +82,7 @@ class CuteFileViewProvider : MultiplePsiFilesPerDocumentFileViewProvider, Templa
         private val TEMPLATE_MARKUP_DATA_TYPE = TemplateDataElementType("TEMPLATE_MARKUP", CuteLanguage.INSTANCE,
                 CuteTypes.T_TEMPLATE_HTML_CODE, CuteTypes.T_OUTER_TEMPLATE_ELEMENT)
 
-        private val TEMPLATE_INNERJS_DATA_TYPE = TemplateDataElementType("TEMPLATE_JS", CuteInnerJSLanguage.INSTANCE,
+        private val TEMPLATE_INNERJS_DATA_TYPE = CuteInnerJSElementType("TEMPLATE_JS", CuteInnerJSLanguage.INSTANCE,
                 CuteTypes.T_TEMPLATE_JAVASCRIPT_CODE, CuteTypes.T_INNER_TEMPLATE_ELEMENT)
     }
 }
