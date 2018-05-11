@@ -48,6 +48,8 @@ dependencies {
 
 intellij {
     version '2018.1.1'
+    alternativeIdePath = '/Applications/WebStorm.app'
+    plugins = ['PsiViewer:2018.1']
 }
 
 patchPluginXml {
