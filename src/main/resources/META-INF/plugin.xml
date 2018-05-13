@@ -16,6 +16,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <fileTypeFactory implementation="org.cutejs.lang.CuteFileTypeFactory"/>
+        <xml.attributeDescriptorsProvider implementation="org.cutejs.ide.codeInsight.CuteAttributeDescriptorsProvider"/>
         <lang.parserDefinition language="CuteJSTemplate" implementationClass="org.cutejs.lang.parser.CuteParserDefinition"/>
         <lang.parserDefinition language="CuteInnerJS" implementationClass="org.cutejs.lang.parser.CuteInnerJSParserDefinition"/>
         <lang.syntaxHighlighterFactory language="CuteJSTemplate" implementationClass="org.cutejs.ide.highlight.CuteHighlighterFactory"/>

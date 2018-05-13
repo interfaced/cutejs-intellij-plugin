@@ -19,13 +19,14 @@ private item_ ::= (
     | block_open_statement
     | block_close_statement
     | T_TEMPLATE_HTML_CODE
+    | T_TEMPLATE_JAVASCRIPT_LIKE_CODE
     | T_TEMPLATE_JAVASCRIPT_CODE
     | T_INNER_TEMPLATE_ELEMENT
     | T_OUTER_TEMPLATE_ELEMENT
     | COMMENT
 )
 
-private block_statement ::= block_open_statement T_TEMPLATE_JAVASCRIPT_CODE* block_close_statement{pin=2}
+block_statement ::= block_open_statement (T_TEMPLATE_JAVASCRIPT_LIKE_CODE|T_TEMPLATE_JAVASCRIPT_CODE)* block_close_statement{pin=2}
 
 block_open_statement ::=
       T_OPEN_BLOCK_MARKER
@@ -36,4 +37,5 @@ block_open_statement ::=
     | T_OPEN_BLOCK_MARKER_EXPORT_DATA
     | T_OPEN_BLOCK_MARKER_INLINE
     | T_OPEN_BLOCK_MARKER_INCLUDE
+
 block_close_statement ::= T_CLOSE_BLOCK_MARKER

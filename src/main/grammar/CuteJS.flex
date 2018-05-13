@@ -122,6 +122,8 @@ WHITE_SPACE = {LINE_TERMINATOR}|{WHITE_CHARS}
 %state ST_DECLARE_NAMESPACE_START
 %state ST_JS_BLOCK
 %state ST_JAVASCRIPT
+%state ST_JS_LIKE_BLOCK
+%state ST_JAVASCRIPT_LIKE
 %%
 
 <YYINITIAL> {
@@ -145,37 +147,37 @@ WHITE_SPACE = {LINE_TERMINATOR}|{WHITE_CHARS}
 {
     {OPEN_BLOCK_MARKER_ESCAPED}
     {
-        yypushstate(ST_JS_BLOCK);
+        yypushstate(ST_JS_LIKE_BLOCK);
         return T_OPEN_BLOCK_MARKER_ESCAPED;
     }
     {OPEN_BLOCK_MARKER_UNESCAPED}
     {
-        yypushstate(ST_JS_BLOCK);
+        yypushstate(ST_JS_LIKE_BLOCK);
         return T_OPEN_BLOCK_MARKER_UNESCAPED;
     }
     {OPEN_BLOCK_MARKER_VAR_TYPE_DECLARATION}
     {
-        yypushstate(ST_JS_BLOCK);
+        yypushstate(ST_JS_LIKE_BLOCK);
         return T_OPEN_BLOCK_MARKER_VAR_TYPE_DECLARATION;
     }
     {OPEN_BLOCK_MARKER_EXPORT_DATA}
     {
-         yypushstate(ST_JS_BLOCK);
+         yypushstate(ST_JS_LIKE_BLOCK);
          return T_OPEN_BLOCK_MARKER_EXPORT_DATA;
     }
     {OPEN_BLOCK_MARKER_NAMESPACE_DECLARATION}
     {
-        yypushstate(ST_JS_BLOCK);
+        yypushstate(ST_JS_LIKE_BLOCK);
         return T_OPEN_BLOCK_MARKER_NAMESPACE_DECLARATION;
     }
     {OPEN_BLOCK_MARKER_INCLUDE}
     {
-        yypushstate(ST_JS_BLOCK);
+        yypushstate(ST_JS_LIKE_BLOCK);
         return T_OPEN_BLOCK_MARKER_INCLUDE;
     }
     {OPEN_BLOCK_MARKER_INLINE}
     {
-        yypushstate(ST_JS_BLOCK);
+        yypushstate(ST_JS_LIKE_BLOCK);
         return T_OPEN_BLOCK_MARKER_INLINE;
     }
     {OPEN_BLOCK_MARKER}
@@ -209,6 +211,25 @@ WHITE_SPACE = {LINE_TERMINATOR}|{WHITE_CHARS}
     }
 }
 
+<ST_JS_LIKE_BLOCK>
+{
+    {CLOSE_BLOCK_MARKER}
+    {
+        yypushback(2);
+        yypopstate();
+    }
+    {WHITE_SPACE}+
+    {
+        yypushstate(ST_JAVASCRIPT_LIKE);
+        return WHITE_SPACE;
+    }
+    .
+    {
+        yypushback(1);
+        yypushstate(ST_JAVASCRIPT_LIKE);
+    }
+}
+
 <ST_JAVASCRIPT>
 {
     !([^]*({CLOSE_BLOCK_MARKER})[^]*){CLOSE_BLOCK_MARKER}
@@ -223,6 +244,24 @@ WHITE_SPACE = {LINE_TERMINATOR}|{WHITE_CHARS}
     !([^]*({CLOSE_BLOCK_MARKER})[^]*)
     {
         return T_TEMPLATE_JAVASCRIPT_CODE;
+        // followed by eof
+    }
+}
+
+<ST_JAVASCRIPT_LIKE>
+{
+    !([^]*({CLOSE_BLOCK_MARKER})[^]*){CLOSE_BLOCK_MARKER}
+    {
+        IElementType el;
+
+        yypushback(2);
+        yypopstate();
+
+        if((el = trimElement(T_TEMPLATE_JAVASCRIPT_LIKE_CODE, true)) != null) return el;
+    }
+    !([^]*({CLOSE_BLOCK_MARKER})[^]*)
+    {
+        return T_TEMPLATE_JAVASCRIPT_LIKE_CODE;
         // followed by eof
     }
 }
