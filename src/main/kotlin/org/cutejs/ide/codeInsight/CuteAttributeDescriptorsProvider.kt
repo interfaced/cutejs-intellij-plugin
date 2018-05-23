@@ -27,6 +27,6 @@ class CuteAttributeDescriptorsProvider : XmlAttributeDescriptorsProvider {
     }
 
     companion object {
-        val CUTE_ATTRIBUTES = arrayOf("data-export-id")
+        val CUTE_ATTRIBUTES = arrayOf("data-export-id", "data-component")
     }
 }
