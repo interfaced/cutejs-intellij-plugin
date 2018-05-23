@@ -1,7 +1,7 @@
 package org.cutejs.file
 
 import com.intellij.psi.templateLanguages.TemplateDataElementType
-import com.intellij.lang.Language;
+import com.intellij.lang.Language
 import com.intellij.psi.tree.IElementType
 import com.intellij.psi.templateLanguages.TemplateLanguageFileViewProvider
 

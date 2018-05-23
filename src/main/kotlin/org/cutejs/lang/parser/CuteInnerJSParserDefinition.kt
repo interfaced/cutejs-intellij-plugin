@@ -1,12 +1,12 @@
 package org.cutejs.lang.parser
 
+import com.intellij.lang.javascript.JavascriptParserDefinition
+import com.intellij.lang.javascript.types.JSFileElementType
+import com.intellij.psi.tree.IFileElementType
+
 import org.cutejs.lang.CuteInnerJSLanguage
 
-import com.intellij.lang.javascript.nashorn.NashornJSParserDefinition;
-import com.intellij.lang.javascript.types.JSFileElementType;
-import com.intellij.psi.tree.IFileElementType;
-
-class CuteInnerJSParserDefinition : NashornJSParserDefinition() {
+class CuteInnerJSParserDefinition : JavascriptParserDefinition() {
     override fun getFileNodeType(): IFileElementType {
         return FILE
     }
