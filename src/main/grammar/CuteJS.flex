@@ -100,6 +100,8 @@ OPEN_BLOCK_MARKER_EXPORT_DATA = {OPEN_BLOCK_MARKER}"@"
 OPEN_BLOCK_MARKER_INCLUDE = {OPEN_BLOCK_MARKER}"#"
 OPEN_BLOCK_MARKER_INLINE = {OPEN_BLOCK_MARKER}"%"
 
+COMMA = ","
+
 HTML_BLOCK = !([^]*(
      {OPEN_BLOCK_MARKER}
     |{OPEN_BLOCK_MARKER_ESCAPED}
@@ -108,25 +110,21 @@ HTML_BLOCK = !([^]*(
     |{OPEN_BLOCK_MARKER_NAMESPACE_DECLARATION}
     |{OPEN_BLOCK_MARKER_INCLUDE}
     |{OPEN_BLOCK_MARKER_INLINE}
+    |{COMMA}
 )[^]*)
 
 LETTER = [:letter:] | "_"
 DIGIT = [:digit:]
 IDENT = {LETTER} ({LETTER}|{DIGIT})*
-NAMESPACE = [A-Za-z][A-Za-z0-9_]*(\.[A-Za-z][A-Za-z0-9_]*)*(\[[A-Za-z][A-Za-z0-9_]*(\.[A-Za-z][A-Za-z0-9_]*)*\])*
+NAMESPACE = ([\(]*)?[A-Za-z][A-Za-z0-9_]*(\.[A-Za-z][A-Za-z0-9_]*)*(\[[A-Za-z][A-Za-z0-9_]*(\.[A-Za-z][A-Za-z0-9_]*)*\])*([\)]*)?
 
-EXPORT_NAME = {NAMESPACE}
+EXPORT_NAME = {IDENT}
 
 LINE_TERMINATOR = \r|\n|\r\n
 WHITE_CHARS = [\t \f]
 WHITE_SPACE = {LINE_TERMINATOR}|{WHITE_CHARS}
 
 %state ST_BLOCK
-%state ST_ESCAPED_START
-%state ST_UNESCAPED_START
-%state ST_DECLARE_VAR_START
-%state ST_EXPORT_START
-%state ST_DECLARE_NAMESPACE_START
 %state ST_JS_BLOCK
 %state ST_JAVASCRIPT
 %state ST_JS_LIKE_BLOCK
@@ -135,6 +133,11 @@ WHITE_SPACE = {LINE_TERMINATOR}|{WHITE_CHARS}
 %state ST_TYPE_BLOCK
 %state ST_TYPE_VAR
 %state ST_TYPE_IDENTIFIER
+%state ST_INLINE_BLOCK
+%state ST_INLINE_TEMPLATE_NAME
+%state ST_INLINE_TEMPLATE_PARAMETERS
+%state ST_WAIT_COMMA
+%state ST_IN_BRACE
 %%
 
 <YYINITIAL> {
@@ -152,7 +155,6 @@ WHITE_SPACE = {LINE_TERMINATOR}|{WHITE_CHARS}
         return trimElement(T_TEMPLATE_HTML_CODE);
     }
 }
-
 
 <ST_BLOCK>
 {
@@ -178,7 +180,7 @@ WHITE_SPACE = {LINE_TERMINATOR}|{WHITE_CHARS}
     }
     {OPEN_BLOCK_MARKER_NAMESPACE_DECLARATION}
     {
-        yypushstate(ST_JS_LIKE_BLOCK);
+        yypushstate(ST_JS_BLOCK);
         return T_OPEN_BLOCK_MARKER_NAMESPACE_DECLARATION;
     }
     {OPEN_BLOCK_MARKER_INCLUDE}
@@ -188,7 +190,7 @@ WHITE_SPACE = {LINE_TERMINATOR}|{WHITE_CHARS}
     }
     {OPEN_BLOCK_MARKER_INLINE}
     {
-        yypushstate(ST_JS_LIKE_BLOCK);
+        yypushstate(ST_INLINE_BLOCK);
         return T_OPEN_BLOCK_MARKER_INLINE;
     }
     {OPEN_BLOCK_MARKER}
@@ -236,11 +238,11 @@ WHITE_SPACE = {LINE_TERMINATOR}|{WHITE_CHARS}
         yypopstate();
         yypushstate(ST_TYPE_IDENTIFIER);
 
-        if((el = trimElement(T_TEMPLATE_JAVASCRIPT_LIKE_CODE, true)) != null) return el;
+        if((el = trimElement(T_TEMPLATE_JAVASCRIPT_CODE, true)) != null) return el;
     }
     !([^]*({WHITE_SPACE})[^]*)
     {
-        return T_TEMPLATE_JAVASCRIPT_LIKE_CODE;
+        return T_TEMPLATE_JAVASCRIPT_CODE;
         // followed by eof
     }
 }
@@ -256,7 +258,7 @@ WHITE_SPACE = {LINE_TERMINATOR}|{WHITE_CHARS}
     {
         return WHITE_SPACE;
     }
-    {IDENT}
+    {NAMESPACE}
     {
         return T_TYPE_IDENTIFIER;
     }
@@ -269,9 +271,91 @@ WHITE_SPACE = {LINE_TERMINATOR}|{WHITE_CHARS}
         yypushback(2);
         yypopstate();
     }
+    {WHITE_SPACE}+
+    {
+        return WHITE_SPACE;
+    }
     {EXPORT_NAME}
     {
         return T_EXPORT_IDENTIFIER;
+    }
+}
+
+<ST_WAIT_COMMA>
+{
+    {COMMA}
+    {
+        yypopstate();
+
+        return T_COMMA_SEPARATOR;
+    }
+}
+
+<ST_INLINE_BLOCK>
+{
+    {CLOSE_BLOCK_MARKER}
+    {
+        yypushback(2);
+        yypopstate();
+    }
+    {WHITE_SPACE}+
+    {
+        return WHITE_SPACE;
+    }
+    .
+    {
+        yypushback(1);
+        yypushstate(ST_INLINE_TEMPLATE_NAME);
+    }
+}
+
+<ST_INLINE_TEMPLATE_NAME>
+{
+    {CLOSE_BLOCK_MARKER}
+    {
+        yypushback(2);
+        yypopstate();
+    }
+    !([^]*({COMMA})[^]*){COMMA}
+    {
+        IElementType el;
+
+        yypushback(1);
+        yypopstate();
+        yypushstate(ST_INLINE_TEMPLATE_PARAMETERS);
+        yypushstate(ST_WAIT_COMMA);
+
+        if((el = trimElement(T_TEMPLATE_JAVASCRIPT_CODE, true)) != null) return el;
+    }
+    !([^]*({COMMA})[^]*)
+    {
+        return T_TEMPLATE_JAVASCRIPT_CODE;
+        // followed by eof
+    }
+}
+
+<ST_INLINE_TEMPLATE_PARAMETERS>
+{
+    {CLOSE_BLOCK_MARKER}
+    {
+        yypushback(2);
+        yypopstate();
+    }
+    !([^]*({COMMA})[^]*){COMMA}
+    {
+        IElementType el;
+
+        yypushback(1);
+        yypopstate();
+        yypushstate(ST_EXPORT_BLOCK);
+        yypushstate(ST_WAIT_COMMA);
+
+        if((el = trimElement(T_TEMPLATE_JAVASCRIPT_CODE, true)) != null) return el;
+    }
+    !([^]*({COMMA})[^]*)
+    {
+        return T_TEMPLATE_JAVASCRIPT_CODE;
+        // followed by eof
     }
 }
 
