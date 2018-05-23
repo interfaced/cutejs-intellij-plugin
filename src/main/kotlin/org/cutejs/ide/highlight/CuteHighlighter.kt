@@ -25,6 +25,8 @@ class CuteHighlighter : SyntaxHighlighterBase() {
             CuteTypes.T_OPEN_BLOCK_MARKER_UNESCAPED,
             CuteTypes.T_OPEN_BLOCK_MARKER_INLINE,
             CuteTypes.T_OPEN_BLOCK_MARKER_INCLUDE -> OPENCLOSETAG_KEYS
+            CuteTypes.T_EXPORT_IDENTIFIER -> EXPORT_ID_KEYS
+            CuteTypes.T_TYPE_IDENTIFIER -> TYPE_ID_KEYS
             else -> EMPTY
         }
     }
@@ -32,8 +34,12 @@ class CuteHighlighter : SyntaxHighlighterBase() {
     companion object {
         private val OPENCLOSETAG = TextAttributesKey.createTextAttributesKey("OPEN_CLOSE_TEMPLATE",
                 DefaultLanguageHighlighterColors.METADATA)
+        private val EXPORT_ID = TextAttributesKey.createTextAttributesKey("EXPORT_ID", DefaultLanguageHighlighterColors.KEYWORD)
+        private val TYPE_ID = TextAttributesKey.createTextAttributesKey("TYPE_ID", DefaultLanguageHighlighterColors.DOC_COMMENT)
 
         val OPENCLOSETAG_KEYS = arrayOf(OPENCLOSETAG)
+        val EXPORT_ID_KEYS = arrayOf(EXPORT_ID)
+        val TYPE_ID_KEYS = arrayOf(TYPE_ID)
 
         private val EMPTY = arrayOf<TextAttributesKey>()
     }
