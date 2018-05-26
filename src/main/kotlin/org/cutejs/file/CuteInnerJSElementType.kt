@@ -6,6 +6,7 @@ import com.intellij.lexer.Lexer
 import com.intellij.psi.impl.source.tree.FileElement
 import com.intellij.psi.tree.IElementType
 import com.intellij.psi.templateLanguages.TemplateLanguageFileViewProvider
+import org.cutejs.lang.psi.visitor.LabeledStatementElementVisitor
 import org.cutejs.lang.psi.visitor.LineBreaksFixingElementVisitor
 import java.lang.StringBuilder
 import java.util.*
@@ -37,5 +38,6 @@ class CuteInnerJSElementType(debugName: String, language: Language, templateElem
 
     override fun prepareParsedTemplateFile(root: FileElement) {
         root.acceptTree(LineBreaksFixingElementVisitor(offsets.get().pop()))
+        root.acceptTree(LabeledStatementElementVisitor(root.manager.project))
     }
 }
