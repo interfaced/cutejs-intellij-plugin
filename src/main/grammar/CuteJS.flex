@@ -101,6 +101,10 @@ OPEN_BLOCK_MARKER_INCLUDE = {OPEN_BLOCK_MARKER}"#"
 OPEN_BLOCK_MARKER_INLINE = {OPEN_BLOCK_MARKER}"%"
 
 COMMA = ","
+LBRACE = "{"
+RBRACE = "}"
+LBRACKET = "["
+RBRACKET = "]"
 
 HTML_BLOCK = !([^]*(
      {OPEN_BLOCK_MARKER}
@@ -110,13 +114,11 @@ HTML_BLOCK = !([^]*(
     |{OPEN_BLOCK_MARKER_NAMESPACE_DECLARATION}
     |{OPEN_BLOCK_MARKER_INCLUDE}
     |{OPEN_BLOCK_MARKER_INLINE}
-    |{COMMA}
 )[^]*)
 
 LETTER = [:letter:] | "_"
 DIGIT = [:digit:]
 IDENT = {LETTER} ({LETTER}|{DIGIT})*
-NAMESPACE = ([\(]*)?[A-Za-z][A-Za-z0-9_]*(\.[A-Za-z][A-Za-z0-9_]*)*(\[[A-Za-z][A-Za-z0-9_]*(\.[A-Za-z][A-Za-z0-9_]*)*\])*([\)]*)?
 
 EXPORT_NAME = {IDENT}
 
@@ -136,8 +138,10 @@ WHITE_SPACE = {LINE_TERMINATOR}|{WHITE_CHARS}
 %state ST_INLINE_BLOCK
 %state ST_INLINE_TEMPLATE_NAME
 %state ST_INLINE_TEMPLATE_PARAMETERS
+%state ST_INLINE_TEMPLATE_PARAMETERS_CONTENT
 %state ST_WAIT_COMMA
 %state ST_IN_BRACE
+%state ST_BRACE_BLOCK
 %%
 
 <YYINITIAL> {
@@ -243,22 +247,21 @@ WHITE_SPACE = {LINE_TERMINATOR}|{WHITE_CHARS}
     !([^]*({WHITE_SPACE})[^]*)
     {
         return T_TEMPLATE_JAVASCRIPT_CODE;
-        // followed by eof
     }
 }
 
 <ST_TYPE_IDENTIFIER>
 {
-    {CLOSE_BLOCK_MARKER}
+    !([^]*({CLOSE_BLOCK_MARKER})[^]*){CLOSE_BLOCK_MARKER}
     {
+        IElementType el;
+
         yypushback(2);
         yypopstate();
+
+        if((el = trimElement(T_TYPE_IDENTIFIER, true)) != null) return el;
     }
-    {WHITE_SPACE}+
-    {
-        return WHITE_SPACE;
-    }
-    {NAMESPACE}
+    !([^]*({CLOSE_BLOCK_MARKER})[^]*)
     {
         return T_TYPE_IDENTIFIER;
     }
@@ -274,6 +277,10 @@ WHITE_SPACE = {LINE_TERMINATOR}|{WHITE_CHARS}
     {WHITE_SPACE}+
     {
         return WHITE_SPACE;
+    }
+    {LBRACKET}{RBRACKET}
+    {
+        return T_ARRAY_MODIFIER;
     }
     {EXPORT_NAME}
     {
@@ -330,7 +337,6 @@ WHITE_SPACE = {LINE_TERMINATOR}|{WHITE_CHARS}
     !([^]*({COMMA})[^]*)
     {
         return T_TEMPLATE_JAVASCRIPT_CODE;
-        // followed by eof
     }
 }
 
@@ -341,21 +347,59 @@ WHITE_SPACE = {LINE_TERMINATOR}|{WHITE_CHARS}
         yypushback(2);
         yypopstate();
     }
+    {LBRACE}
+    {
+        yypushstate(ST_BRACE_BLOCK);
+    }
+    {COMMA}
+    {
+        yypopstate();
+        yypushstate(ST_EXPORT_BLOCK);
+
+        return T_COMMA_SEPARATOR;
+    }
+    {WHITE_SPACE}+
+    {
+        return WHITE_SPACE;
+    }
+    .
+    {
+        yypushback(1);
+        yypushstate(ST_INLINE_TEMPLATE_PARAMETERS_CONTENT);
+    }
+}
+
+<ST_INLINE_TEMPLATE_PARAMETERS_CONTENT>
+{
     !([^]*({COMMA})[^]*){COMMA}
     {
         IElementType el;
 
         yypushback(1);
         yypopstate();
-        yypushstate(ST_EXPORT_BLOCK);
-        yypushstate(ST_WAIT_COMMA);
 
         if((el = trimElement(T_TEMPLATE_JAVASCRIPT_CODE, true)) != null) return el;
     }
     !([^]*({COMMA})[^]*)
     {
         return T_TEMPLATE_JAVASCRIPT_CODE;
-        // followed by eof
+    }
+}
+
+<ST_BRACE_BLOCK>
+{
+    {LBRACE}
+    {
+        yypushstate(ST_BRACE_BLOCK);
+    }
+    {RBRACE}
+    {
+        yypopstate();
+
+        return T_TEMPLATE_JAVASCRIPT_CODE;
+    }
+    !([^]*({RBRACE}|{LBRACE})[^]*) {
+        return T_TEMPLATE_JAVASCRIPT_CODE;
     }
 }
 
@@ -411,7 +455,6 @@ WHITE_SPACE = {LINE_TERMINATOR}|{WHITE_CHARS}
     !([^]*({CLOSE_BLOCK_MARKER})[^]*)
     {
         return T_TEMPLATE_JAVASCRIPT_CODE;
-        // followed by eof
     }
 }
 
@@ -429,7 +472,6 @@ WHITE_SPACE = {LINE_TERMINATOR}|{WHITE_CHARS}
     !([^]*({CLOSE_BLOCK_MARKER})[^]*)
     {
         return T_TEMPLATE_JAVASCRIPT_LIKE_CODE;
-        // followed by eof
     }
 }
 

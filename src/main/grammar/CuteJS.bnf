@@ -31,13 +31,14 @@ private item_ ::= (
     | T_TYPE_IDENTIFIER
     | COMMENT
     | T_COMMA_SEPARATOR
+    | T_ARRAY_MODIFIER
 )
 
 block_statement ::= (regular_block_statement|type_block_statement)
 regular_block_statement ::= block_open_statement (T_TEMPLATE_JAVASCRIPT_LIKE_CODE|T_TEMPLATE_JAVASCRIPT_CODE)* block_close_statement{pin=2}
 type_block_statement ::= T_OPEN_BLOCK_MARKER_VAR_TYPE_DECLARATION T_TEMPLATE_JAVASCRIPT_CODE T_TYPE_IDENTIFIER block_close_statement{pin=3}
-export_block_statement ::= T_OPEN_BLOCK_MARKER_EXPORT_DATA T_EXPORT_IDENTIFIER block_close_statement{pin=2}
-inline_block_statement ::= T_OPEN_BLOCK_MARKER_INLINE T_TEMPLATE_JAVASCRIPT_CODE T_COMMA_SEPARATOR T_TEMPLATE_JAVASCRIPT_CODE T_COMMA_SEPARATOR T_EXPORT_IDENTIFIER block_close_statement{pin=6}
+export_block_statement ::= T_OPEN_BLOCK_MARKER_EXPORT_DATA T_EXPORT_IDENTIFIER T_ARRAY_MODIFIER? block_close_statement{pin=2}
+inline_block_statement ::= T_OPEN_BLOCK_MARKER_INLINE T_TEMPLATE_JAVASCRIPT_CODE T_COMMA_SEPARATOR T_TEMPLATE_JAVASCRIPT_CODE* T_COMMA_SEPARATOR T_EXPORT_IDENTIFIER block_close_statement{pin=6}
 
 block_open_statement ::=
       T_OPEN_BLOCK_MARKER
