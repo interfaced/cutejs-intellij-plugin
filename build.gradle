@@ -17,7 +17,7 @@ plugins {
 }
 
 group 'org.cutejs'
-version '0.1'
+version '0.2'
 
 apply plugin: 'kotlin'
 apply plugin: 'org.jetbrains.grammarkit'
@@ -54,9 +54,18 @@ intellij {
 
 patchPluginXml {
     changeNotes """
-      Initial release.<br>
       Features:<br>
-      * Layered syntax highlighting
+      <ul>
+        <li>Complete HTML markup support</li>
+        <li>JS code injection analysis (means syntax errors annotations, autocompletion, go-to-declaration etc.)</li>
+        <li>Supporting custom attributes for HTML elements: data-export-id, data-component</li>
+        <li>Brace matching for template block braces</li>
+        <li>Auto-closing template block braces</li>
+        <li>Custom icon for jst files</li>
+        <li>Custom highlighting for: type annotation blocks, export blocks, inline component blocks</li>
+      </ul>
+      
+      <a href="https://github.com/interfaced/cutejs-intellij-plugin">More info ...</a>
       """
 }
 
