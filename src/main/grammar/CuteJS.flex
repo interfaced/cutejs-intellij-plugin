@@ -100,6 +100,12 @@ OPEN_BLOCK_MARKER_EXPORT_DATA = {OPEN_BLOCK_MARKER}"@"
 OPEN_BLOCK_MARKER_INCLUDE = {OPEN_BLOCK_MARKER}"#"
 OPEN_BLOCK_MARKER_INLINE = {OPEN_BLOCK_MARKER}"%"
 
+COMMA = ","
+LBRACE = "{"
+RBRACE = "}"
+LBRACKET = "["
+RBRACKET = "]"
+
 HTML_BLOCK = !([^]*(
      {OPEN_BLOCK_MARKER}
     |{OPEN_BLOCK_MARKER_ESCAPED}
@@ -110,18 +116,32 @@ HTML_BLOCK = !([^]*(
     |{OPEN_BLOCK_MARKER_INLINE}
 )[^]*)
 
+LETTER = [:letter:] | "_"
+DIGIT = [:digit:]
+IDENT = {LETTER} ({LETTER}|{DIGIT})*
+
+EXPORT_NAME = {IDENT}
+
 LINE_TERMINATOR = \r|\n|\r\n
 WHITE_CHARS = [\t \f]
 WHITE_SPACE = {LINE_TERMINATOR}|{WHITE_CHARS}
 
 %state ST_BLOCK
-%state ST_ESCAPED_START
-%state ST_UNESCAPED_START
-%state ST_DECLARE_VAR_START
-%state ST_EXPORT_START
-%state ST_DECLARE_NAMESPACE_START
 %state ST_JS_BLOCK
 %state ST_JAVASCRIPT
+%state ST_JS_LIKE_BLOCK
+%state ST_JAVASCRIPT_LIKE
+%state ST_EXPORT_BLOCK
+%state ST_TYPE_BLOCK
+%state ST_TYPE_VAR
+%state ST_TYPE_IDENTIFIER
+%state ST_INLINE_BLOCK
+%state ST_INLINE_TEMPLATE_NAME
+%state ST_INLINE_TEMPLATE_PARAMETERS
+%state ST_INLINE_TEMPLATE_PARAMETERS_CONTENT
+%state ST_WAIT_COMMA
+%state ST_IN_BRACE
+%state ST_BRACE_BLOCK
 %%
 
 <YYINITIAL> {
@@ -140,7 +160,6 @@ WHITE_SPACE = {LINE_TERMINATOR}|{WHITE_CHARS}
     }
 }
 
-
 <ST_BLOCK>
 {
     {OPEN_BLOCK_MARKER_ESCAPED}
@@ -155,12 +174,12 @@ WHITE_SPACE = {LINE_TERMINATOR}|{WHITE_CHARS}
     }
     {OPEN_BLOCK_MARKER_VAR_TYPE_DECLARATION}
     {
-        yypushstate(ST_JS_BLOCK);
+        yypushstate(ST_TYPE_BLOCK);
         return T_OPEN_BLOCK_MARKER_VAR_TYPE_DECLARATION;
     }
     {OPEN_BLOCK_MARKER_EXPORT_DATA}
     {
-         yypushstate(ST_JS_BLOCK);
+         yypushstate(ST_EXPORT_BLOCK);
          return T_OPEN_BLOCK_MARKER_EXPORT_DATA;
     }
     {OPEN_BLOCK_MARKER_NAMESPACE_DECLARATION}
@@ -170,12 +189,12 @@ WHITE_SPACE = {LINE_TERMINATOR}|{WHITE_CHARS}
     }
     {OPEN_BLOCK_MARKER_INCLUDE}
     {
-        yypushstate(ST_JS_BLOCK);
+        yypushstate(ST_JS_LIKE_BLOCK);
         return T_OPEN_BLOCK_MARKER_INCLUDE;
     }
     {OPEN_BLOCK_MARKER_INLINE}
     {
-        yypushstate(ST_JS_BLOCK);
+        yypushstate(ST_INLINE_BLOCK);
         return T_OPEN_BLOCK_MARKER_INLINE;
     }
     {OPEN_BLOCK_MARKER}
@@ -187,6 +206,200 @@ WHITE_SPACE = {LINE_TERMINATOR}|{WHITE_CHARS}
     {
         yypopstate();
         return T_CLOSE_BLOCK_MARKER;
+    }
+}
+
+<ST_TYPE_BLOCK>
+{
+    {CLOSE_BLOCK_MARKER}
+    {
+        yypushback(2);
+        yypopstate();
+    }
+    {WHITE_SPACE}+
+    {
+        return WHITE_SPACE;
+    }
+    .
+    {
+        yypushback(1);
+        yypushstate(ST_TYPE_VAR);
+    }
+}
+
+<ST_TYPE_VAR>
+{
+    {CLOSE_BLOCK_MARKER}
+    {
+        yypushback(2);
+        yypopstate();
+    }
+    !([^]*({WHITE_SPACE})[^]*){WHITE_SPACE}
+    {
+        IElementType el;
+
+        yypushback(1);
+        yypopstate();
+        yypushstate(ST_TYPE_IDENTIFIER);
+
+        if((el = trimElement(T_TEMPLATE_JAVASCRIPT_CODE, true)) != null) return el;
+    }
+    !([^]*({WHITE_SPACE})[^]*)
+    {
+        return T_TEMPLATE_JAVASCRIPT_CODE;
+    }
+}
+
+<ST_TYPE_IDENTIFIER>
+{
+    !([^]*({CLOSE_BLOCK_MARKER})[^]*){CLOSE_BLOCK_MARKER}
+    {
+        IElementType el;
+
+        yypushback(2);
+        yypopstate();
+
+        if((el = trimElement(T_TYPE_IDENTIFIER, true)) != null) return el;
+    }
+    !([^]*({CLOSE_BLOCK_MARKER})[^]*)
+    {
+        return T_TYPE_IDENTIFIER;
+    }
+}
+
+<ST_EXPORT_BLOCK>
+{
+    {CLOSE_BLOCK_MARKER}
+    {
+        yypushback(2);
+        yypopstate();
+    }
+    {WHITE_SPACE}+
+    {
+        return WHITE_SPACE;
+    }
+    {LBRACKET}{RBRACKET}
+    {
+        return T_ARRAY_MODIFIER;
+    }
+    {EXPORT_NAME}
+    {
+        return T_EXPORT_IDENTIFIER;
+    }
+}
+
+<ST_WAIT_COMMA>
+{
+    {COMMA}
+    {
+        yypopstate();
+
+        return T_COMMA_SEPARATOR;
+    }
+}
+
+<ST_INLINE_BLOCK>
+{
+    {CLOSE_BLOCK_MARKER}
+    {
+        yypushback(2);
+        yypopstate();
+    }
+    {WHITE_SPACE}+
+    {
+        return WHITE_SPACE;
+    }
+    .
+    {
+        yypushback(1);
+        yypushstate(ST_INLINE_TEMPLATE_NAME);
+    }
+}
+
+<ST_INLINE_TEMPLATE_NAME>
+{
+    {CLOSE_BLOCK_MARKER}
+    {
+        yypushback(2);
+        yypopstate();
+    }
+    !([^]*({COMMA})[^]*){COMMA}
+    {
+        IElementType el;
+
+        yypushback(1);
+        yypopstate();
+        yypushstate(ST_INLINE_TEMPLATE_PARAMETERS);
+        yypushstate(ST_WAIT_COMMA);
+
+        if((el = trimElement(T_TEMPLATE_JAVASCRIPT_CODE, true)) != null) return el;
+    }
+    !([^]*({COMMA})[^]*)
+    {
+        return T_TEMPLATE_JAVASCRIPT_CODE;
+    }
+}
+
+<ST_INLINE_TEMPLATE_PARAMETERS>
+{
+    {CLOSE_BLOCK_MARKER}
+    {
+        yypushback(2);
+        yypopstate();
+    }
+    {LBRACE}
+    {
+        yypushstate(ST_BRACE_BLOCK);
+    }
+    {COMMA}
+    {
+        yypopstate();
+        yypushstate(ST_EXPORT_BLOCK);
+
+        return T_COMMA_SEPARATOR;
+    }
+    {WHITE_SPACE}+
+    {
+        return WHITE_SPACE;
+    }
+    .
+    {
+        yypushback(1);
+        yypushstate(ST_INLINE_TEMPLATE_PARAMETERS_CONTENT);
+    }
+}
+
+<ST_INLINE_TEMPLATE_PARAMETERS_CONTENT>
+{
+    !([^]*({COMMA})[^]*){COMMA}
+    {
+        IElementType el;
+
+        yypushback(1);
+        yypopstate();
+
+        if((el = trimElement(T_TEMPLATE_JAVASCRIPT_CODE, true)) != null) return el;
+    }
+    !([^]*({COMMA})[^]*)
+    {
+        return T_TEMPLATE_JAVASCRIPT_CODE;
+    }
+}
+
+<ST_BRACE_BLOCK>
+{
+    {LBRACE}
+    {
+        yypushstate(ST_BRACE_BLOCK);
+    }
+    {RBRACE}
+    {
+        yypopstate();
+
+        return T_TEMPLATE_JAVASCRIPT_CODE;
+    }
+    !([^]*({RBRACE}|{LBRACE})[^]*) {
+        return T_TEMPLATE_JAVASCRIPT_CODE;
     }
 }
 
@@ -209,6 +422,25 @@ WHITE_SPACE = {LINE_TERMINATOR}|{WHITE_CHARS}
     }
 }
 
+<ST_JS_LIKE_BLOCK>
+{
+    {CLOSE_BLOCK_MARKER}
+    {
+        yypushback(2);
+        yypopstate();
+    }
+    {WHITE_SPACE}+
+    {
+        yypushstate(ST_JAVASCRIPT_LIKE);
+        return WHITE_SPACE;
+    }
+    .
+    {
+        yypushback(1);
+        yypushstate(ST_JAVASCRIPT_LIKE);
+    }
+}
+
 <ST_JAVASCRIPT>
 {
     !([^]*({CLOSE_BLOCK_MARKER})[^]*){CLOSE_BLOCK_MARKER}
@@ -223,7 +455,23 @@ WHITE_SPACE = {LINE_TERMINATOR}|{WHITE_CHARS}
     !([^]*({CLOSE_BLOCK_MARKER})[^]*)
     {
         return T_TEMPLATE_JAVASCRIPT_CODE;
-        // followed by eof
+    }
+}
+
+<ST_JAVASCRIPT_LIKE>
+{
+    !([^]*({CLOSE_BLOCK_MARKER})[^]*){CLOSE_BLOCK_MARKER}
+    {
+        IElementType el;
+
+        yypushback(2);
+        yypopstate();
+
+        if((el = trimElement(T_TEMPLATE_JAVASCRIPT_LIKE_CODE, true)) != null) return el;
+    }
+    !([^]*({CLOSE_BLOCK_MARKER})[^]*)
+    {
+        return T_TEMPLATE_JAVASCRIPT_LIKE_CODE;
     }
 }
 

@@ -13,13 +13,13 @@ import com.intellij.psi.tree.TokenSet
 import com.intellij.psi.TokenType
 
 import org.cutejs.lang.lexer.CuteLexer
-import org.cutejs.lang.psi.CuteTypes
+import org.cutejs.lang.psi.CuteTypes.*
 import org.cutejs.lang.psi.CuteFile
 import org.cutejs.file.CuteFileElementType
 
 class CuteParserDefinition : ParserDefinition {
     private val tsWHITESPACES = TokenSet.create(TokenType.WHITE_SPACE)
-    private val tsCOMMENTS = TokenSet.create(CuteTypes.COMMENT)
+    private val tsCOMMENTS = TokenSet.create(COMMENT)
 
     override fun createParser(project: Project): PsiParser {
         return CuteParser()
@@ -50,10 +50,24 @@ class CuteParserDefinition : ParserDefinition {
     }
 
     override fun createElement(node: ASTNode): PsiElement {
-        return CuteTypes.Factory.createElement(node)
+        return Factory.createElement(node)
     }
 
     override fun getCommentTokens(): TokenSet {
         return tsCOMMENTS
+    }
+
+    companion object {
+        val OPEN_BLOCK_MARKERS = TokenSet.create(
+                BLOCK_OPEN_STATEMENT,
+                T_OPEN_BLOCK_MARKER,
+                T_OPEN_BLOCK_MARKER_ESCAPED,
+                T_OPEN_BLOCK_MARKER_EXPORT_DATA,
+                T_OPEN_BLOCK_MARKER_UNESCAPED,
+                T_OPEN_BLOCK_MARKER_INCLUDE,
+                T_OPEN_BLOCK_MARKER_INLINE,
+                T_OPEN_BLOCK_MARKER_NAMESPACE_DECLARATION,
+                T_OPEN_BLOCK_MARKER_VAR_TYPE_DECLARATION
+        )
     }
 }

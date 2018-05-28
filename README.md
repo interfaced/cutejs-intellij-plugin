@@ -2,23 +2,33 @@
 
 ## Info
 
-Associated extension is **.jst**
+Associated file extension is **.jst**
 
 ## Features
 
-- Syntax highlighting
-  - [x] Open/close tags (including variants of *{{* like *{{-*, *{{=*, etc.)
-  - [x] Text outside of template blocks as HTML (that can be changed by *Template Data Language* option in ide)
-  - [x] Text inside of template blocks as JS
-  - [ ] Different syntax highlight depenging on type of template blocks
-- Code assistance
-  - [ ] Syntax errors annotation
-  - [ ] Jump to source from widget code
-  - [ ] Autocompletion (JS, HTML, Template tags)
+- [x] Syntax highlighting
+  - [x] Open/close template block braces
+  - [x] HTML markup
+  - [x] JS code inside template blocks
+  - [x] Custom highlighting:
+    - [x] type annotation blocks
+    - [x] export blocks
+    - [x] inline component blocks
+- [x] Supporting custom attributes for HTML elements: *data-export-id*, *data-component*
+- [x] Brace matching for template block braces
+- [x] Auto-closing template block braces after typing *{{*
+- [x] Complete HTML markup support (means working tags autocompletion etc.)
+- [x] JS code analysis (means syntax errors annotations, autocompletion, go-to-declaration etc.)
+- [x] Custom icon for jst files
+- [ ] Providing reference on template declaration in jst file (go-to-declaration from js files to jst)
+- [ ] Providing predefined libs such as `cuteJs` in jst files (for js injections)
+- [ ] Smart scope providing for js injections (binding with template compiled code)
   
 ## Issues
 
 - No tests
+- Auto-closing braces may put unnecessary last brace
+  - Fix: disable `Insert paired braces` in ide preferences
 
 ## Install
 
@@ -37,6 +47,8 @@ For build and bundle plugin in zip archive (will located in `build/distributions
 ```
 
 For run IntelliJ IDEA with bundled plugin for test
+
+By default `runIde` will try to launch WebStorm in `/Applications/WebStorm.app` (path to your ide can be changed in `build.gradle` file)
 
 ```
 ./gradlew runIde
