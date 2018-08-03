@@ -19,7 +19,7 @@ class CuteInnerJSElementType(debugName: String, language: Language, templateElem
         return language
     }
 
-    override fun createTemplateText(sourceCode: CharSequence, baseLexer: Lexer, outerRangesCollector: RangesCollector): CharSequence {
+    override fun createTemplateText(sourceCode: CharSequence, baseLexer: Lexer, outerRangesCollector: RangeCollector): CharSequence {
         if (offsets.get() == null) {
             offsets.set(Stack())
         }
@@ -29,8 +29,8 @@ class CuteInnerJSElementType(debugName: String, language: Language, templateElem
         return super.createTemplateText(sourceCode, baseLexer, outerRangesCollector)
     }
 
-    override fun appendCurrentTemplateToken(result: StringBuilder, buf: CharSequence?, lexer: Lexer) {
-        super.appendCurrentTemplateToken(result, buf, lexer)
+    override fun appendCurrentTemplateToken(result: StringBuilder, buf: CharSequence, lexer: Lexer, collector: RangeCollector) {
+        super.appendCurrentTemplateToken(result, buf, lexer, collector)
 
         offsets.get().peek().add(result.length)
         result.append('\n')
