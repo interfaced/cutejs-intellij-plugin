@@ -38,6 +38,6 @@ class CuteInnerJSElementType(debugName: String, language: Language, templateElem
 
     override fun prepareParsedTemplateFile(root: FileElement) {
         root.acceptTree(LineBreaksFixingElementVisitor(offsets.get().pop()))
-        root.acceptTree(LabeledStatementElementVisitor(root.manager.project))
+        root.acceptTree(LabeledStatementElementVisitor())
     }
 }

@@ -29,10 +29,6 @@ class CuteParserDefinition : ParserDefinition {
         return CuteFile(viewProvider)
     }
 
-    override fun spaceExistanceTypeBetweenTokens(left: ASTNode, right: ASTNode): ParserDefinition.SpaceRequirements {
-        return ParserDefinition.SpaceRequirements.MAY
-    }
-
     override fun getStringLiteralElements(): TokenSet {
         return TokenSet.EMPTY
     }

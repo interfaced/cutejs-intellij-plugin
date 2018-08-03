@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.interfaced.cutejs.plugin.support</id>
     <name>CuteJS</name>
-    <version>0.2</version>
+    <version>0.2.1</version>
     <vendor email="reefridge@ifaced.ru" url="http://interfaced.tv">Interfaced</vendor>
 
     <description><![CDATA[

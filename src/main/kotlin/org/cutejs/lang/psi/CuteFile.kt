@@ -17,8 +17,4 @@ class CuteFile(viewProvider: FileViewProvider) : PsiFileBase(viewProvider, CuteL
     override fun toString(): String {
         return "CuteJS Template File"
     }
-
-    override fun getIcon(flags: Int): Icon? {
-        return super.getIcon(flags)
-    }
 }

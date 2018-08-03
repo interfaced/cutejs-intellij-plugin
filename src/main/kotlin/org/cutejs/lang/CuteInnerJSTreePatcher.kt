@@ -10,7 +10,7 @@ import org.cutejs.lang.psi.CuteTypes
 class CuteInnerJSTreePatcher : SimpleTreePatcher() {
     override fun insert(parent: CompositeElement, anchorBefore: TreeElement?, toInsert: OuterLanguageElement) {
         if (anchorBefore != null && anchorBefore.elementType != CuteTypes.T_INNER_TEMPLATE_ELEMENT) {
-            var topLevelElement = anchorBefore!!
+            var topLevelElement: TreeElement = anchorBefore
 
             while (topLevelElement.treeParent !is FileElement && topLevelElement.treeParent.textRange.startOffset == anchorBefore.textRange.startOffset) {
                 topLevelElement = topLevelElement.treeParent
