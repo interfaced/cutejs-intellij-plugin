@@ -19,7 +19,6 @@ import org.cutejs.file.CuteFileElementType
 
 class CuteParserDefinition : ParserDefinition {
     private val tsWHITESPACES = TokenSet.create(TokenType.WHITE_SPACE)
-    private val tsCOMMENTS = TokenSet.create(COMMENT)
 
     override fun createParser(project: Project): PsiParser {
         return CuteParser()
@@ -50,20 +49,19 @@ class CuteParserDefinition : ParserDefinition {
     }
 
     override fun getCommentTokens(): TokenSet {
-        return tsCOMMENTS
+        return TokenSet.EMPTY
     }
 
     companion object {
-        val OPEN_BLOCK_MARKERS = TokenSet.create(
-                BLOCK_OPEN_STATEMENT,
-                T_OPEN_BLOCK_MARKER,
-                T_OPEN_BLOCK_MARKER_ESCAPED,
-                T_OPEN_BLOCK_MARKER_EXPORT_DATA,
-                T_OPEN_BLOCK_MARKER_UNESCAPED,
-                T_OPEN_BLOCK_MARKER_INCLUDE,
-                T_OPEN_BLOCK_MARKER_INLINE,
-                T_OPEN_BLOCK_MARKER_NAMESPACE_DECLARATION,
-                T_OPEN_BLOCK_MARKER_VAR_TYPE_DECLARATION
+        val OPEN_MARKERS = TokenSet.create(
+                T_OPEN,
+                T_ESCAPE,
+                T_EXPORT,
+                T_INTERPOLATE,
+                T_PARTIAL,
+                T_INLINE,
+                T_NAMESPACE,
+                T_TYPEDEF
         )
     }
 }

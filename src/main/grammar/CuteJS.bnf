@@ -14,37 +14,18 @@
 
 JSTemplate ::= item_*
 
-private item_ ::= (
-      block_statement
-    | block_open_statement
-    | block_close_statement
-    | type_block_statement
-    | export_block_statement
-    | inline_block_statement
-    | regular_block_statement
-    | T_TEMPLATE_HTML_CODE
-    | T_TEMPLATE_JAVASCRIPT_LIKE_CODE
-    | T_TEMPLATE_JAVASCRIPT_CODE
-    | T_INNER_TEMPLATE_ELEMENT
-    | T_OUTER_TEMPLATE_ELEMENT
-    | T_EXPORT_IDENTIFIER
-    | T_TYPE_IDENTIFIER
-    | COMMENT
-    | T_COMMA_SEPARATOR
-    | T_ARRAY_MODIFIER
-)
+private item_ ::= (T_OUTER_DATA|statement|data)
 
-block_statement ::= (regular_block_statement|type_block_statement)
-regular_block_statement ::= block_open_statement (T_TEMPLATE_JAVASCRIPT_LIKE_CODE|T_TEMPLATE_JAVASCRIPT_CODE)* block_close_statement{pin=2}
-type_block_statement ::= T_OPEN_BLOCK_MARKER_VAR_TYPE_DECLARATION T_TEMPLATE_JAVASCRIPT_CODE T_TYPE_IDENTIFIER block_close_statement{pin=3}
-export_block_statement ::= T_OPEN_BLOCK_MARKER_EXPORT_DATA T_EXPORT_IDENTIFIER T_ARRAY_MODIFIER? block_close_statement{pin=2}
-inline_block_statement ::= T_OPEN_BLOCK_MARKER_INLINE T_TEMPLATE_JAVASCRIPT_CODE T_COMMA_SEPARATOR T_TEMPLATE_JAVASCRIPT_CODE* T_COMMA_SEPARATOR T_EXPORT_IDENTIFIER block_close_statement{pin=6}
-
-block_open_statement ::=
-      T_OPEN_BLOCK_MARKER
-    | T_OPEN_BLOCK_MARKER_UNESCAPED
-    | T_OPEN_BLOCK_MARKER_ESCAPED
-    | T_OPEN_BLOCK_MARKER_NAMESPACE_DECLARATION
-    | T_OPEN_BLOCK_MARKER_INCLUDE
-
-block_close_statement ::= T_CLOSE_BLOCK_MARKER
+data ::= T_DATA+
+statement ::= expression T_CLOSE
+expression ::= (escape|interpolate|typedef|namespace|export|partial|inline|eval)
+escape ::= T_ESCAPE T_EVAL
+interpolate ::= T_INTERPOLATE T_EVAL
+typedef ::= T_TYPEDEF T_THIS_PROPERTY T_ARRAYS_PECIFIER? T_DOC_TYPE
+namespace ::= T_NAMESPACE T_IDENTIFIER
+export ::= T_EXPORT export_args
+partial ::= T_PARTIAL include_args
+inline ::= T_INLINE include_args
+include_args ::= T_IDENTIFIER T_COMMA T_EVAL T_COMMA export_args
+export_args ::= T_IDENTIFIER T_ARRAY_SPECIFIER?
+eval ::= T_OPEN T_EVAL

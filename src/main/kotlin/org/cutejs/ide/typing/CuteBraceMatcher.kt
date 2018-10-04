@@ -15,7 +15,7 @@ class CuteBraceMatcher : PairedBraceMatcher {
 
     override fun getPairs(): Array<BracePair> {
         return OPEN_BRACE.types.map {
-            BracePair(it, T_CLOSE_BLOCK_MARKER, true)
+            BracePair(it, T_CLOSE, true)
         }.toTypedArray()
     }
 
@@ -26,14 +26,14 @@ class CuteBraceMatcher : PairedBraceMatcher {
     companion object {
         fun tokenSetOf(vararg tokens: IElementType) = TokenSet.create(*tokens)
         private val OPEN_BRACE = tokenSetOf(
-                T_OPEN_BLOCK_MARKER,
-                T_OPEN_BLOCK_MARKER_ESCAPED,
-                T_OPEN_BLOCK_MARKER_EXPORT_DATA,
-                T_OPEN_BLOCK_MARKER_UNESCAPED,
-                T_OPEN_BLOCK_MARKER_INCLUDE,
-                T_OPEN_BLOCK_MARKER_INLINE,
-                T_OPEN_BLOCK_MARKER_NAMESPACE_DECLARATION,
-                T_OPEN_BLOCK_MARKER_VAR_TYPE_DECLARATION
+                T_OPEN,
+                T_ESCAPE,
+                T_EXPORT,
+                T_INTERPOLATE,
+                T_PARTIAL,
+                T_INLINE,
+                T_NAMESPACE,
+                T_TYPEDEF
         )
     }
 }

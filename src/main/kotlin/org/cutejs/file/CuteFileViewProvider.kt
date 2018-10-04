@@ -48,7 +48,7 @@ class CuteFileViewProvider : MultiplePsiFilesPerDocumentFileViewProvider, Templa
     }
 
     override fun getLanguages(): Set<Language> {
-        return setOf(CuteLanguage.INSTANCE, CuteInnerJSLanguage.INSTANCE, myTemplateDataLanguage)
+        return setOf(CuteLanguage.INSTANCE, myTemplateDataLanguage)
     }
 
     override fun cloneInner(file: VirtualFile): MultiplePsiFilesPerDocumentFileViewProvider {
@@ -62,12 +62,6 @@ class CuteFileViewProvider : MultiplePsiFilesPerDocumentFileViewProvider, Templa
             CuteLanguage.INSTANCE -> {
                 return parserDefinition.createFile(this)
             }
-            CuteInnerJSLanguage.INSTANCE -> {
-                val file = parserDefinition.createFile(this) as PsiFileImpl
-                file.contentElementType = TEMPLATE_INNERJS_DATA_TYPE
-
-                return file
-            }
             myTemplateDataLanguage -> {
                 val file = parserDefinition.createFile(this) as PsiFileImpl
                 file.contentElementType = TEMPLATE_MARKUP_DATA_TYPE
@@ -80,9 +74,6 @@ class CuteFileViewProvider : MultiplePsiFilesPerDocumentFileViewProvider, Templa
 
     companion object {
         private val TEMPLATE_MARKUP_DATA_TYPE = TemplateDataElementType("TEMPLATE_MARKUP", CuteLanguage.INSTANCE,
-                CuteTypes.T_TEMPLATE_HTML_CODE, CuteTypes.T_OUTER_TEMPLATE_ELEMENT)
-
-        private val TEMPLATE_INNERJS_DATA_TYPE = CuteInnerJSElementType("TEMPLATE_JS", CuteInnerJSLanguage.INSTANCE,
-                CuteTypes.T_TEMPLATE_JAVASCRIPT_CODE, CuteTypes.T_INNER_TEMPLATE_ELEMENT)
+                CuteTypes.T_DATA, CuteTypes.T_OUTER_DATA)
     }
 }

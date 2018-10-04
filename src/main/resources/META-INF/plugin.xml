@@ -16,19 +16,19 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <fileTypeFactory implementation="org.cutejs.lang.CuteFileTypeFactory"/>
-        <xml.attributeDescriptorsProvider implementation="org.cutejs.ide.codeInsight.CuteAttributeDescriptorsProvider"/>
+        <!--<xml.attributeDescriptorsProvider implementation="org.cutejs.ide.codeInsight.CuteAttributeDescriptorsProvider"/>-->
         <lang.parserDefinition language="CuteJSTemplate" implementationClass="org.cutejs.lang.parser.CuteParserDefinition"/>
-        <lang.parserDefinition language="CuteInnerJS" implementationClass="org.cutejs.lang.parser.CuteInnerJSParserDefinition"/>
+        <!--<lang.parserDefinition language="CuteInnerJS" implementationClass="org.cutejs.lang.parser.CuteInnerJSParserDefinition"/>-->
         <lang.syntaxHighlighterFactory language="CuteJSTemplate" implementationClass="org.cutejs.ide.highlight.CuteHighlighterFactory"/>
-        <lang.braceMatcher language="CuteJSTemplate" implementationClass="org.cutejs.ide.typing.CuteBraceMatcher"/>
-        <lang.treePatcher language="CuteInnerJS" implementationClass="org.cutejs.lang.CuteInnerJSTreePatcher"/>
-        <typedHandler implementation="org.cutejs.ide.typing.CuteBlockTypedHandler"/>
+        <!--<lang.braceMatcher language="CuteJSTemplate" implementationClass="org.cutejs.ide.typing.CuteBraceMatcher"/>-->
+        <!--<lang.treePatcher language="CuteInnerJS" implementationClass="org.cutejs.lang.CuteInnerJSTreePatcher"/>-->
+        <!--<typedHandler implementation="org.cutejs.ide.typing.CuteBlockTypedHandler"/>-->
         <editorHighlighterProvider filetype="CuteJSTemplate" implementationClass="org.cutejs.ide.highlight.CuteEditorHighlighterProvider"/>
         <lang.fileViewProviderFactory language="CuteJSTemplate" implementationClass="org.cutejs.file.CuteFileViewProviderFactory"/>
     </extensions>
 
     <extensions defaultExtensionNs="JavaScript">
-        <elementScopeProvider implementation="org.cutejs.file.CuteElementResolveScopeProvider"/>
-        <intentionAndInspectionFilter language="CuteInnerJS" implementationClass="org.cutejs.ide.inspection.CuteInnerJSInspectionFilter"/>
+        <!--<elementScopeProvider implementation="org.cutejs.file.CuteElementResolveScopeProvider"/>-->
+        <!--<intentionAndInspectionFilter language="CuteInnerJS" implementationClass="org.cutejs.ide.inspection.CuteInnerJSInspectionFilter"/>-->
     </extensions>
 </idea-plugin>

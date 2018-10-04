@@ -16,19 +16,18 @@ class CuteHighlighter : SyntaxHighlighterBase() {
 
     override fun getTokenHighlights(type: IElementType): Array<TextAttributesKey> {
         return when (type) {
-            CuteTypes.T_OPEN_BLOCK_MARKER,
-            CuteTypes.T_CLOSE_BLOCK_MARKER,
-            CuteTypes.T_OPEN_BLOCK_MARKER_NAMESPACE_DECLARATION,
-            CuteTypes.T_OPEN_BLOCK_MARKER_EXPORT_DATA,
-            CuteTypes.T_OPEN_BLOCK_MARKER_VAR_TYPE_DECLARATION,
-            CuteTypes.T_OPEN_BLOCK_MARKER_ESCAPED,
-            CuteTypes.T_OPEN_BLOCK_MARKER_UNESCAPED,
-            CuteTypes.T_OPEN_BLOCK_MARKER_INLINE,
-            CuteTypes.T_OPEN_BLOCK_MARKER_INCLUDE -> OPENCLOSETAG_KEYS
-            CuteTypes.T_EXPORT_IDENTIFIER -> EXPORT_ID_KEYS
-            CuteTypes.T_TYPE_IDENTIFIER -> TYPE_ID_KEYS
-            CuteTypes.T_COMMA_SEPARATOR -> COMMA_KEYS
-            CuteTypes.T_ARRAY_MODIFIER -> BRACKET_KEYS
+            CuteTypes.T_OPEN,
+            CuteTypes.T_CLOSE,
+            CuteTypes.T_NAMESPACE,
+            CuteTypes.T_EXPORT,
+            CuteTypes.T_TYPEDEF,
+            CuteTypes.T_ESCAPE,
+            CuteTypes.T_INTERPOLATE,
+            CuteTypes.T_INLINE,
+            CuteTypes.T_PARTIAL -> OPENCLOSETAG_KEYS
+            CuteTypes.T_IDENTIFIER -> EXPORT_ID_KEYS
+            CuteTypes.T_COMMA -> COMMA_KEYS
+            CuteTypes.T_ARRAY_SPECIFIER -> BRACKET_KEYS
             else -> EMPTY
         }
     }

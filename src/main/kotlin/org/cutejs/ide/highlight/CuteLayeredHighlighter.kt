@@ -28,13 +28,13 @@ class CuteLayeredHighlighter(project: Project?, virtualFile: VirtualFile?, color
             }
         }
 
-        val jsHighlighter = SyntaxHighlighterFactory.getSyntaxHighlighter(StdFileTypes.JS, project, virtualFile)
-        registerLayer(T_TEMPLATE_JAVASCRIPT_CODE, LayerDescriptor(jsHighlighter, ";\n"))
-        registerLayer(T_TEMPLATE_JAVASCRIPT_LIKE_CODE, LayerDescriptor(jsHighlighter, ";\n"))
+//        val jsHighlighter = SyntaxHighlighterFactory.getSyntaxHighlighter(StdFileTypes.JS, project, virtualFile)
+//        registerLayer(T_EVAL, LayerDescriptor(jsHighlighter, ";\n"))
+//        registerLayer(T_EVAL, LayerDescriptor(jsHighlighter, ";\n"))
 
         if (type != null) {
             val outerHighlighter = SyntaxHighlighterFactory.getSyntaxHighlighter(type, project, virtualFile)
-            registerLayer(T_TEMPLATE_HTML_CODE, LayerDescriptor(outerHighlighter, ""))
+            registerLayer(T_DATA, LayerDescriptor(outerHighlighter, ""))
         }
     }
 }

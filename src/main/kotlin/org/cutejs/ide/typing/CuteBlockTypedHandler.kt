@@ -24,7 +24,7 @@ class CuteBlockTypedHandler : TypedHandlerDelegate() {
         if (c in blockOpenSymbols) {
             val elementAt = file.viewProvider.findElementAt(offset, CuteLanguage.INSTANCE)
 
-            if (elementAt != null && elementAt.node.elementType == CuteTypes.T_CLOSE_BLOCK_MARKER && CuteParserDefinition.OPEN_BLOCK_MARKERS.contains(elementAt.parent.prevSibling.node.elementType)) {
+            if (elementAt != null && elementAt.node.elementType == CuteTypes.T_CLOSE && CuteParserDefinition.OPEN_MARKERS.contains(elementAt.parent.prevSibling.node.elementType)) {
                 if (c != ' ') {
                     editor.document.insertString(offset, "  ")
                     editor.caretModel.moveToOffset(offset + 1)
