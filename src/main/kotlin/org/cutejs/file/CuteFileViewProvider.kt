@@ -16,9 +16,7 @@ import com.intellij.psi.templateLanguages.TemplateLanguage
 import com.intellij.psi.templateLanguages.TemplateLanguageFileViewProvider
 import org.cutejs.lang.CuteLanguage
 import org.cutejs.lang.psi.CuteTypes
-
-import org.cutejs.lang.CuteInnerJSLanguage
-
+import org.cutejs.lang.CuteJSLanguage
 
 class CuteFileViewProvider : MultiplePsiFilesPerDocumentFileViewProvider, TemplateLanguageFileViewProvider {
     private val myTemplateDataLanguage: Language
@@ -48,7 +46,7 @@ class CuteFileViewProvider : MultiplePsiFilesPerDocumentFileViewProvider, Templa
     }
 
     override fun getLanguages(): Set<Language> {
-        return setOf(CuteLanguage.INSTANCE, myTemplateDataLanguage)
+        return setOf(CuteLanguage.INSTANCE, CuteJSLanguage.INSTANCE, myTemplateDataLanguage)
     }
 
     override fun cloneInner(file: VirtualFile): MultiplePsiFilesPerDocumentFileViewProvider {
@@ -68,6 +66,12 @@ class CuteFileViewProvider : MultiplePsiFilesPerDocumentFileViewProvider, Templa
 
                 return file
             }
+            CuteJSLanguage.INSTANCE -> {
+                val file = parserDefinition.createFile(this) as PsiFileImpl
+                file.contentElementType = TEMPLATE_JS_DATA_TYPE
+
+                return file
+            }
             else -> null
         }
     }
@@ -75,5 +79,7 @@ class CuteFileViewProvider : MultiplePsiFilesPerDocumentFileViewProvider, Templa
     companion object {
         private val TEMPLATE_MARKUP_DATA_TYPE = TemplateDataElementType("TEMPLATE_MARKUP", CuteLanguage.INSTANCE,
                 CuteTypes.T_DATA, CuteTypes.T_OUTER_DATA)
+        private val TEMPLATE_JS_DATA_TYPE = CuteJSElementType("TEMPLATE_JS", CuteJSLanguage.INSTANCE,
+                CuteTypes.T_EVAL_CHAR, CuteTypes.T_OUTER_DATA)
     }
 }

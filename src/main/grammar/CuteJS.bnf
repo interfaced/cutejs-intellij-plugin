@@ -6,7 +6,7 @@
   elementTypeClass="org.cutejs.lang.psi.CuteCompositeElementType"
   tokenTypeClass="org.cutejs.lang.psi.CuteTokenType"
 
-  psiClassPrefix="JST"
+  psiClassPrefix="Cute"
   psiImplClassSuffix="Impl"
   psiPackage="org.cutejs.lang.psi"
   psiImplPackage="org.cutejs.lang.psi.impl"
@@ -16,17 +16,20 @@ JSTemplate ::= item_*
 
 private item_ ::= (T_OUTER_DATA|statement|data)
 
-statement ::= T_OPEN expression T_CLOSE
+statement ::= T_OPEN expression? T_CLOSE
 expression ::= (escape|interpolate|typedef|namespace|export|partial|inline|eval_data)
 escape ::= T_ESCAPE eval_expression
 interpolate ::= T_INTERPOLATE eval_expression
-typedef ::= T_TYPEDEF T_THIS_PROPERTY T_ARRAYS_PECIFIER? T_DOC_TYPE
-namespace ::= T_NAMESPACE T_IDENTIFIER
+typedef ::= T_TYPEDEF this_property T_ARRAYS_PECIFIER? T_DOC_TYPE
+namespace ::= T_NAMESPACE namespace_args
 export ::= T_EXPORT export_args
 partial ::= T_PARTIAL include_args
 inline ::= T_INLINE include_args
-include_args ::= T_IDENTIFIER T_COMMA eval_expression T_COMMA export_args
+include_args ::= namespace_args T_COMMA eval_expression T_COMMA export_args
+namespace_args ::= (namespace_identifier|T_IDENTIFIER)
 export_args ::= T_IDENTIFIER T_ARRAY_SPECIFIER?
+this_property ::= T_THIS T_DOT T_IDENTIFIER
+namespace_identifier ::= T_IDENTIFIER { T_DOT T_IDENTIFIER }+
 data ::= T_DATA+
 eval_data ::= T_EVAL_CHAR+
 eval_expression ::= T_EVAL_EXPRESSION_CHAR+

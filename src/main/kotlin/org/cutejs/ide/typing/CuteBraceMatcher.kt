@@ -14,26 +14,10 @@ class CuteBraceMatcher : PairedBraceMatcher {
     }
 
     override fun getPairs(): Array<BracePair> {
-        return OPEN_BRACE.types.map {
-            BracePair(it, T_CLOSE, true)
-        }.toTypedArray()
+        return arrayOf(BracePair(T_OPEN, T_CLOSE, true))
     }
 
     override fun isPairedBracesAllowedBeforeType(lbraceType: IElementType, contextType: IElementType?): Boolean {
         return true
-    }
-
-    companion object {
-        fun tokenSetOf(vararg tokens: IElementType) = TokenSet.create(*tokens)
-        private val OPEN_BRACE = tokenSetOf(
-                T_OPEN,
-                T_ESCAPE,
-                T_EXPORT,
-                T_INTERPOLATE,
-                T_PARTIAL,
-                T_INLINE,
-                T_NAMESPACE,
-                T_TYPEDEF
-        )
     }
 }

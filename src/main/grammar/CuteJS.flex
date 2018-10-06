@@ -38,11 +38,11 @@ Partial = "#"
 Inline = "%"
 This = "this"
 Dot = "."
-Identifier = [a-zA-Z\-_][a-zA-Z0-9\-_\.]+
+Identifier = [a-zA-Z\-_][a-zA-Z0-9\-_]*
 Comma = ","
 ArraySpecifier = {LBrack}{RBrack}
-ThisProperty = {This}{Dot}[a-zA-Z\-_][a-zA-Z0-9\-_]+
-IncludeClose = {Comma} {WhiteSpace}* {Identifier} {ArraySpecifier}? {WhiteSpace}* {Close}
+ThisProperty = {This}{Dot}{Identifier}
+IncludeClose = {Comma}{WhiteSpace}*{Identifier}{ArraySpecifier}?{WhiteSpace}*{Close}
 
 %state EXPRESSION_START, EXPRESSION, INCLUDE, INCLUDE_INPUT, TYPEDEF, DOC_TYPE, EVAL, EVAL_EXPRESSION
 %%
@@ -57,6 +57,7 @@ IncludeClose = {Comma} {WhiteSpace}* {Identifier} {ArraySpecifier}? {WhiteSpace}
     {Export} { yybegin(EXPRESSION); return T_EXPORT; }
     {Partial} { yybegin(INCLUDE); return T_PARTIAL; }
     {Inline} { yybegin(INCLUDE); return T_INLINE; }
+    {Close} { yybegin(YYINITIAL); return T_CLOSE; }
     [^] { yypushback(1); yybegin(EVAL); }
 }
 
@@ -71,11 +72,16 @@ IncludeClose = {Comma} {WhiteSpace}* {Identifier} {ArraySpecifier}? {WhiteSpace}
 <EVAL> [^] { return T_EVAL_CHAR; }
 <EVAL_EXPRESSION> [^] { return T_EVAL_EXPRESSION_CHAR; }
 
-<TYPEDEF> {ThisProperty} { yybegin(DOC_TYPE); return T_THIS_PROPERTY; }
+<TYPEDEF> {
+    {This} { return T_THIS; }
+    {Identifier} { yybegin(DOC_TYPE); return T_IDENTIFIER; }
+}
 <DOC_TYPE> ~{Close} { yypushback(2); yybegin(EXPRESSION); return T_DOC_TYPE; }
 
 <EXPRESSION, INCLUDE, TYPEDEF> {
     {Comma} { return T_COMMA; }
+    {Dot} { return T_DOT; }
+    {This} { return T_THIS; }
     {ArraySpecifier} { return T_ARRAY_SPECIFIER; }
     {Identifier} { return T_IDENTIFIER; }
     {Close} { yybegin(YYINITIAL); return T_CLOSE; }

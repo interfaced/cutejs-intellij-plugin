@@ -15,6 +15,6 @@ class CuteFile(viewProvider: FileViewProvider) : PsiFileBase(viewProvider, CuteL
     }
 
     override fun toString(): String {
-        return "CuteJS Template File"
+        return "CuteJSFile:${this.name}"
     }
 }
