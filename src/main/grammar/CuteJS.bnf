@@ -16,16 +16,17 @@ JSTemplate ::= item_*
 
 private item_ ::= (T_OUTER_DATA|statement|data)
 
-data ::= T_DATA+
-statement ::= expression T_CLOSE
-expression ::= (escape|interpolate|typedef|namespace|export|partial|inline|eval)
-escape ::= T_ESCAPE T_EVAL
-interpolate ::= T_INTERPOLATE T_EVAL
+statement ::= T_OPEN expression T_CLOSE
+expression ::= (escape|interpolate|typedef|namespace|export|partial|inline|eval_data)
+escape ::= T_ESCAPE eval_expression
+interpolate ::= T_INTERPOLATE eval_expression
 typedef ::= T_TYPEDEF T_THIS_PROPERTY T_ARRAYS_PECIFIER? T_DOC_TYPE
 namespace ::= T_NAMESPACE T_IDENTIFIER
 export ::= T_EXPORT export_args
 partial ::= T_PARTIAL include_args
 inline ::= T_INLINE include_args
-include_args ::= T_IDENTIFIER T_COMMA T_EVAL T_COMMA export_args
+include_args ::= T_IDENTIFIER T_COMMA eval_expression T_COMMA export_args
 export_args ::= T_IDENTIFIER T_ARRAY_SPECIFIER?
-eval ::= T_OPEN T_EVAL
+data ::= T_DATA+
+eval_data ::= T_EVAL_CHAR+
+eval_expression ::= T_EVAL_EXPRESSION_CHAR+
