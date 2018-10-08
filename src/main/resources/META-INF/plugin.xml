@@ -25,6 +25,7 @@
         <editorHighlighterProvider filetype="CuteTemplate" implementationClass="org.cutejs.ide.highlight.CuteEditorHighlighterProvider"/>
         <lang.fileViewProviderFactory language="CuteTemplate" implementationClass="org.cutejs.file.CuteFileViewProviderFactory"/>
         <gotoDeclarationHandler implementation="org.cutejs.ide.codeInsight.CuteGotoDeclarationHandler" />
+        <highlightVisitor implementation="org.cutejs.ide.codeInsight.CuteHighlightVisitor"/>
     </extensions>
 
     <extensions defaultExtensionNs="JavaScript">

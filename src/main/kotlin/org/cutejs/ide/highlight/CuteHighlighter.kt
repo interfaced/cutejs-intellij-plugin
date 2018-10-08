@@ -33,19 +33,21 @@ class CuteHighlighter : SyntaxHighlighterBase() {
     }
 
     companion object {
-        private val OPEN_CLOSE = TextAttributesKey.createTextAttributesKey("OPEN_CLOSE_TEMPLATE", METADATA)
-        private val KEYWORD_ = TextAttributesKey.createTextAttributesKey("KEYWORD", KEYWORD)
-        private val DOC = TextAttributesKey.createTextAttributesKey("TYPE", DOC_COMMENT)
-        private val COMMA_ = TextAttributesKey.createTextAttributesKey("COMMA", COMMA)
-        private val PAIRED_BRACKETS = TextAttributesKey.createTextAttributesKey("PAIRED_BRACKETS", BRACKETS)
-        private val IDENTIFIER_ = TextAttributesKey.createTextAttributesKey("ID", IDENTIFIER)
+        val OPEN_CLOSE = TextAttributesKey.createTextAttributesKey("OPEN_CLOSE_TEMPLATE", METADATA)
+        val KEYWORD_ = TextAttributesKey.createTextAttributesKey("KEYWORD", KEYWORD)
+        val DOC = TextAttributesKey.createTextAttributesKey("TYPE", DOC_COMMENT)
+        val COMMA_ = TextAttributesKey.createTextAttributesKey("COMMA", COMMA)
+        val PAIRED_BRACKETS = TextAttributesKey.createTextAttributesKey("PAIRED_BRACKETS", BRACKETS)
+        val IDENTIFIER_ = TextAttributesKey.createTextAttributesKey("ID", IDENTIFIER)
+        val DECLARATION = TextAttributesKey.createTextAttributesKey("DECLARATION", FUNCTION_DECLARATION)
+        val PROPERTY = TextAttributesKey.createTextAttributesKey("PROP", INSTANCE_FIELD)
 
-        val OPEN_CLOSE_KEYS = arrayOf(OPEN_CLOSE)
-        val KEYWORD_KEYS = arrayOf(KEYWORD_)
-        val DOC_KEYS = arrayOf(DOC)
-        val COMMA_KEYS = arrayOf(COMMA_)
-        val BRACKET_KEYS = arrayOf(PAIRED_BRACKETS)
-        val IDENTIFIER_KEYS = arrayOf(IDENTIFIER_)
+        private val OPEN_CLOSE_KEYS = arrayOf(OPEN_CLOSE)
+        private val KEYWORD_KEYS = arrayOf(KEYWORD_)
+        private val DOC_KEYS = arrayOf(DOC)
+        private val COMMA_KEYS = arrayOf(COMMA_)
+        private val BRACKET_KEYS = arrayOf(PAIRED_BRACKETS)
+        private val IDENTIFIER_KEYS = arrayOf(IDENTIFIER_)
 
         private val EMPTY = arrayOf<TextAttributesKey>()
     }

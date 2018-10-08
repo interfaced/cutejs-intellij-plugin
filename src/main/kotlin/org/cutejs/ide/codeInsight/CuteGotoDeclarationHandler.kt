@@ -25,6 +25,7 @@ class CuteGotoDeclarationHandler : GotoDeclarationHandler {
         val isChildOfExport = getParentOfType(element, CuteExportArgsImpl::class.java) != null
         val isChildOfTypedef = getParentOfType(element, CuteTypedefImpl::class.java) != null
         val isIdentifier = element?.node?.elementType == T_IDENTIFIER
+        val isLeaf = element?.node?.treeNext == null
 
         if (!(isChildOfNamespace || isChildOfExport || isChildOfTypedef) || !isIdentifier) return null
 
@@ -48,7 +49,7 @@ class CuteGotoDeclarationHandler : GotoDeclarationHandler {
 
         val nsElements = findByNameInNamespace(templateNamespace, templateIdentifier, projectScope)
 
-        if (isChildOfNamespace) {
+        if (isChildOfNamespace && isLeaf) {
             return nsElements.toTypedArray()
         } else if (isChildOfExport || isChildOfTypedef) {
             val identifier = element.node?.text ?: return null
