@@ -24,6 +24,7 @@
         <!--<typedHandler implementation="org.cutejs.ide.typing.CuteBlockTypedHandler"/>-->
         <editorHighlighterProvider filetype="CuteTemplate" implementationClass="org.cutejs.ide.highlight.CuteEditorHighlighterProvider"/>
         <lang.fileViewProviderFactory language="CuteTemplate" implementationClass="org.cutejs.file.CuteFileViewProviderFactory"/>
+        <gotoDeclarationHandler implementation="org.cutejs.ide.codeInsight.CuteGotoDeclarationHandler" />
     </extensions>
 
     <extensions defaultExtensionNs="JavaScript">
