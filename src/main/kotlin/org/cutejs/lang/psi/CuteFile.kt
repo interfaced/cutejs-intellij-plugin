@@ -3,15 +3,12 @@ package org.cutejs.lang.psi
 import com.intellij.extapi.psi.PsiFileBase
 import com.intellij.openapi.fileTypes.FileType
 import com.intellij.psi.FileViewProvider
-import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.PsiFile
-import com.intellij.psi.util.PsiTreeUtil.getChildOfType
+import com.intellij.psi.util.PsiTreeUtil
 
 import org.cutejs.lang.CuteLanguage
 import org.cutejs.lang.CuteFileType
-import org.cutejs.lang.psi.impl.CuteExpressionImpl
-import org.cutejs.lang.psi.impl.CuteNamespaceImpl
+import org.cutejs.lang.psi.impl.CuteStatementImpl
 
 class CuteFile(viewProvider: FileViewProvider) : PsiFileBase(viewProvider, CuteLanguage.INSTANCE) {
     private var generatedFile: PsiFile? = null
@@ -38,26 +35,8 @@ class CuteFile(viewProvider: FileViewProvider) : PsiFileBase(viewProvider, CuteL
     }
 
     private fun templateNamespaceIdentifierText(): String? {
-        val visitor = NamespaceVisitor()
-        this.acceptChildren(visitor)
-
-        return visitor.getNamespaceIdentifierText()
-    }
-}
-
-class NamespaceVisitor : PsiElementVisitor() {
-    private var namespace: CuteNamespace? = null
-
-    override fun visitElement(element: PsiElement?) {
-        if (namespace == null) {
-            val expression = getChildOfType(element, CuteExpressionImpl::class.java)
-            namespace = getChildOfType(expression, CuteNamespaceImpl::class.java)
-        }
-
-        super.visitElement(element)
-    }
-
-    fun getNamespaceIdentifierText() : String? {
+        val statement = PsiTreeUtil.getChildOfType(this, CuteStatementImpl::class.java)
+        val namespace = statement?.expression?.namespace
         val namespaceIdentifier = namespace?.namespaceArgs?.namespaceIdentifier
 
         return namespaceIdentifier?.text
