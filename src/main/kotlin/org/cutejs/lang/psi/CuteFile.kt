@@ -5,6 +5,7 @@ import com.intellij.openapi.fileTypes.FileType
 import com.intellij.psi.FileViewProvider
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiElementVisitor
+import com.intellij.psi.PsiFile
 import com.intellij.psi.util.PsiTreeUtil.getChildOfType
 
 import org.cutejs.lang.CuteLanguage
@@ -13,11 +14,14 @@ import org.cutejs.lang.psi.impl.CuteExpressionImpl
 import org.cutejs.lang.psi.impl.CuteNamespaceImpl
 
 class CuteFile(viewProvider: FileViewProvider) : PsiFileBase(viewProvider, CuteLanguage.INSTANCE) {
-    fun templateNamespace(): String? {
-        val visitor = NamespaceVisitor()
-        this.acceptChildren(visitor)
+    private var generatedFile: PsiFile? = null
 
-        return visitor.getNamespaceText()
+    fun getOrFindGeneratedFile(): PsiFile? {
+        if (generatedFile == null || generatedFile?.virtualFile?.exists() == false) {
+            generatedFile = findGeneratedFile()
+        }
+
+        return generatedFile
     }
 
     override fun getFileType(): FileType {
@@ -26,6 +30,18 @@ class CuteFile(viewProvider: FileViewProvider) : PsiFileBase(viewProvider, CuteL
 
     override fun toString(): String {
         return "CuteJSFile:${this.name}"
+    }
+
+    private fun findGeneratedFile(): PsiFile? {
+        val templateNamespace = templateNamespaceIdentifierText() ?: return null
+        return CuteResolveUtil.findGeneratedFileByNamespace(templateNamespace, project)
+    }
+
+    private fun templateNamespaceIdentifierText(): String? {
+        val visitor = NamespaceVisitor()
+        this.acceptChildren(visitor)
+
+        return visitor.getNamespaceIdentifierText()
     }
 }
 
@@ -41,7 +57,7 @@ class NamespaceVisitor : PsiElementVisitor() {
         super.visitElement(element)
     }
 
-    fun getNamespaceText() : String? {
+    fun getNamespaceIdentifierText() : String? {
         val namespaceIdentifier = namespace?.namespaceArgs?.namespaceIdentifier
 
         return namespaceIdentifier?.text
