@@ -22,7 +22,6 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
 %unicode
 
 LineTerminator = \r|\n|\r\n
-InputCharacter = [^\r\n]
 WhiteSpace     = {LineTerminator} | [ \t\f]
 
 Open = "{{"
@@ -41,7 +40,6 @@ Dot = "."
 Identifier = [a-zA-Z\-_][a-zA-Z0-9\-_]*
 Comma = ","
 ArraySpecifier = {LBrack}{RBrack}
-ThisProperty = {This}{Dot}{Identifier}
 IncludeClose = {Comma}{WhiteSpace}*{Identifier}{ArraySpecifier}?{WhiteSpace}*{Close}
 
 %state EXPRESSION_START, EXPRESSION, INCLUDE, INCLUDE_INPUT, TYPEDEF, DOC_TYPE, EVAL, EVAL_EXPRESSION

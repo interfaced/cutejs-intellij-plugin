@@ -1,4 +1,4 @@
-package org.cutejs.ide.typing
+package org.cutejs.ide
 
 import com.intellij.lang.BracePair
 import com.intellij.lang.PairedBraceMatcher

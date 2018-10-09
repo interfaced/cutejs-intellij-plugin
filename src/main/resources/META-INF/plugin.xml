@@ -1,11 +1,11 @@
 <idea-plugin>
     <id>com.interfaced.cutejs.plugin.support</id>
     <name>CuteJS</name>
-    <version>0.2.1</version>
+    <version>1.0.0-alpha.0</version>
     <vendor email="reefridge@ifaced.ru" url="http://interfaced.tv">Interfaced</vendor>
 
     <description><![CDATA[
-      CuteJS Template lang support.
+      CuteJS Template engine support.
     ]]></description>
 
     <change-notes></change-notes>
@@ -20,8 +20,7 @@
         <lang.parserDefinition language="CuteTemplate" implementationClass="org.cutejs.lang.parser.CuteParserDefinition"/>
         <lang.parserDefinition language="CuteJS" implementationClass="org.cutejs.lang.parser.CuteJSParserDefinition"/>
         <lang.syntaxHighlighterFactory language="CuteTemplate" implementationClass="org.cutejs.ide.highlight.CuteHighlighterFactory"/>
-        <lang.braceMatcher language="CuteTemplate" implementationClass="org.cutejs.ide.typing.CuteBraceMatcher"/>
-        <!--<typedHandler implementation="org.cutejs.ide.typing.CuteBlockTypedHandler"/>-->
+        <lang.braceMatcher language="CuteTemplate" implementationClass="org.cutejs.ide.CuteBraceMatcher"/>
         <editorHighlighterProvider filetype="CuteTemplate" implementationClass="org.cutejs.ide.highlight.CuteEditorHighlighterProvider"/>
         <lang.fileViewProviderFactory language="CuteTemplate" implementationClass="org.cutejs.file.CuteFileViewProviderFactory"/>
         <gotoDeclarationHandler implementation="org.cutejs.ide.codeInsight.CuteGotoDeclarationHandler" />
