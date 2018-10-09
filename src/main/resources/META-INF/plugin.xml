@@ -25,6 +25,7 @@
         <lang.fileViewProviderFactory language="CuteTemplate" implementationClass="org.cutejs.file.CuteFileViewProviderFactory"/>
         <gotoDeclarationHandler implementation="org.cutejs.ide.codeInsight.CuteGotoDeclarationHandler" />
         <highlightVisitor implementation="org.cutejs.ide.codeInsight.CuteHighlightVisitor"/>
+        <psi.referenceContributor implementation="org.cutejs.ide.codeInsight.CuteReferenceContributor"/>
     </extensions>
 
     <extensions defaultExtensionNs="JavaScript">
