@@ -11,10 +11,10 @@ import org.cutejs.lang.CuteFileType
 import org.cutejs.lang.psi.impl.CuteStatementImpl
 
 class CuteFile(viewProvider: FileViewProvider) : PsiFileBase(viewProvider, CuteLanguage.INSTANCE) {
-    private var generatedFile: PsiFile? = null
+    private var generatedFile: CuteGeneratedFile? = null
 
-    fun getOrFindGeneratedFile(): PsiFile? {
-        if (generatedFile == null || generatedFile?.virtualFile?.exists() == false) {
+    fun getOrFindGeneratedFile(): CuteGeneratedFile? {
+        if (generatedFile == null || generatedFile?.file?.virtualFile?.exists() == false) {
             generatedFile = findGeneratedFile()
         }
 
@@ -29,16 +29,15 @@ class CuteFile(viewProvider: FileViewProvider) : PsiFileBase(viewProvider, CuteL
         return "CuteJSFile:${this.name}"
     }
 
-    private fun findGeneratedFile(): PsiFile? {
-        val templateNamespace = templateNamespaceIdentifierText() ?: return null
-        return CuteResolveUtil.findGeneratedFileByNamespace(templateNamespace, project)
-    }
-
-    private fun templateNamespaceIdentifierText(): String? {
+    fun templateNamespaceIdentifier(): CuteNamespaceIdentifier? {
         val statement = PsiTreeUtil.getChildOfType(this, CuteStatementImpl::class.java)
         val namespace = statement?.expression?.namespace
-        val namespaceIdentifier = namespace?.namespaceArgs?.namespaceIdentifier
 
-        return namespaceIdentifier?.text
+        return namespace?.namespaceArgs?.namespaceIdentifier
+    }
+
+    private fun findGeneratedFile(): CuteGeneratedFile? {
+        val templateNamespace = templateNamespaceIdentifier()?.text ?: return null
+        return CuteResolveUtil.findGeneratedFileByNamespace(templateNamespace, project)
     }
 }

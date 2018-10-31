@@ -51,17 +51,4 @@ class CuteParserDefinition : ParserDefinition {
     override fun getCommentTokens(): TokenSet {
         return TokenSet.EMPTY
     }
-
-    companion object {
-        val OPEN_MARKERS = TokenSet.create(
-                T_OPEN,
-                T_ESCAPE,
-                T_EXPORT,
-                T_INTERPOLATE,
-                T_PARTIAL,
-                T_INLINE,
-                T_NAMESPACE,
-                T_TYPEDEF
-        )
-    }
 }

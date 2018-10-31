@@ -15,6 +15,7 @@
     <depends>JavaScript</depends>
 
     <extensions defaultExtensionNs="com.intellij">
+        <fileBasedIndex implementation="org.cutejs.index.CuteTemplateCacheIndex"/>
         <fileTypeFactory implementation="org.cutejs.lang.CuteFileTypeFactory"/>
         <xml.attributeDescriptorsProvider implementation="org.cutejs.ide.codeInsight.CuteAttributeDescriptorsProvider"/>
         <lang.parserDefinition language="CuteTemplate" implementationClass="org.cutejs.lang.parser.CuteParserDefinition"/>
@@ -24,7 +25,9 @@
         <editorHighlighterProvider filetype="CuteTemplate" implementationClass="org.cutejs.ide.highlight.CuteEditorHighlighterProvider"/>
         <lang.fileViewProviderFactory language="CuteTemplate" implementationClass="org.cutejs.file.CuteFileViewProviderFactory"/>
         <gotoDeclarationHandler implementation="org.cutejs.ide.codeInsight.CuteGotoDeclarationHandler" />
-        <highlightVisitor implementation="org.cutejs.ide.codeInsight.CuteHighlightVisitor"/>
+        <highlightVisitor implementation="org.cutejs.ide.highlight.CuteHighlightVisitor"/>
+        <psi.referenceContributor language="JavaScript" implementation="org.cutejs.ide.codeInsight.CuteReferenceContributor"/>
+        <stubElementTypeHolder class="org.cutejs.lang.CuteElementTypes"/>
     </extensions>
 
     <extensions defaultExtensionNs="JavaScript">
