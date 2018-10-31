@@ -16,7 +16,8 @@ class CuteGotoDeclarationHandler : GotoDeclarationHandler {
     }
 
     override fun getGotoDeclarationTargets(element: PsiElement?, p1: Int, editor: Editor?): Array<PsiElement>? {
-        val isChildOfNamespace = getParentOfType(element, CuteNamespaceImpl::class.java) != null
+        val namespace = getParentOfType(element, CuteNamespaceImpl::class.java)
+        val isChildOfNamespace = namespace != null
         val isChildOfExport = getParentOfType(element, CuteExportArgsImpl::class.java) != null
         val isChildOfTypedef = getParentOfType(element, CuteTypedefImpl::class.java) != null
         val isIdentifier = element?.node?.elementType == T_IDENTIFIER
@@ -27,11 +28,11 @@ class CuteGotoDeclarationHandler : GotoDeclarationHandler {
         val cuteFile = element?.containingFile as CuteFile
         val cuteGeneratedFile = cuteFile.getOrFindGeneratedFile() ?: return null
 
-        if (isChildOfNamespace && isLeaf) {
-            return arrayOf(cuteGeneratedFile.firstChild)
+        if (isChildOfNamespace && isLeaf && namespace?.namespaceArgs?.namespaceIdentifier?.text == cuteGeneratedFile.namespace) {
+            return arrayOf(cuteGeneratedFile.file.firstChild)
         } else if (isChildOfExport || isChildOfTypedef) {
             val identifier = element.node?.text ?: return null
-            return CuteResolveUtil.findElementsInFile(identifier, cuteGeneratedFile)
+            return CuteResolveUtil.findElementsInFile(identifier, cuteGeneratedFile.file)
         }
 
         return null

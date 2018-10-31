@@ -11,7 +11,7 @@ open class CuteFileType : LanguageFileType(CuteLanguage.INSTANCE) {
     }
 
     override fun getDescription(): String {
-        return "CuteJS Template language file"
+        return "CuteJS Template engine file"
     }
 
     override fun getDefaultExtension(): String {

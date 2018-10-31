@@ -1,26 +1,23 @@
-package org.cutejs.ide.codeInsight
+package org.cutejs.ide.highlight
 
 import com.intellij.codeInsight.daemon.impl.HighlightVisitor
 import com.intellij.codeInsight.daemon.impl.analysis.HighlightInfoHolder
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiWhiteSpace
-import org.cutejs.lang.psi.visitor.CuteRecursiveElementVisitor
 import com.intellij.codeInsight.daemon.impl.HighlightInfoType
 import com.intellij.codeInsight.daemon.impl.HighlightInfo
-import org.cutejs.ide.highlight.CuteHighlighter
 import org.cutejs.lang.psi.*
 
-class CuteHighlightVisitor : CuteRecursiveElementVisitor(), HighlightVisitor {
+class CuteHighlightVisitor : CuteVisitor(), HighlightVisitor {
     private var infoHolder: HighlightInfoHolder? = null
 
-    override fun visitNamespace(element: CuteNamespace) {
-        val namespaceIdentifier = element.namespaceArgs.namespaceIdentifier ?: return
+    override fun visitNamespaceIdentifier(element: CuteNamespaceIdentifier) {
         val cuteFile = element.containingFile as CuteFile
         val generatedFile = cuteFile.getOrFindGeneratedFile()
 
-        if (generatedFile != null) {
-            val lastIdentifier = namespaceIdentifier.lastChild
+        if (generatedFile != null && generatedFile.namespace == element.node.text) {
+            val lastIdentifier = element.lastChild
             highlightDeclaration(lastIdentifier)
         }
     }
@@ -56,7 +53,7 @@ class CuteHighlightVisitor : CuteRecursiveElementVisitor(), HighlightVisitor {
         val cuteFile = element.containingFile as CuteFile
         val generatedFile = cuteFile.getOrFindGeneratedFile() ?: return
 
-        if (CuteResolveUtil.findElementsInFile(element.node.text, generatedFile) != null) {
+        if (CuteResolveUtil.findElementsInFile(element.node.text, generatedFile.file) != null) {
             highlightProperty(element)
         }
     }

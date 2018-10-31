@@ -18,7 +18,7 @@ class CuteResolveUtil {
     companion object {
         private const val GENERATED_EXTENSION = ".jst.js"
 
-        fun findGeneratedFileByNamespace(namespace: String, project: Project): PsiFile? {
+        fun findGeneratedFileByNamespace(namespace: String, project: Project): CuteGeneratedFile? {
             val lastIdentifier = namespace.split(".").last()
             val projectScope = ProjectScope.getProjectScope(project)
 
@@ -31,7 +31,13 @@ class CuteResolveUtil {
                 isJstGenFile && isTargetNamespace
             }
 
-            return fileElement?.containingFile
+            val file = fileElement?.containingFile
+
+            return if (file != null) {
+                CuteGeneratedFile(file, namespace)
+            } else {
+                file
+            }
         }
 
         fun findElementsInFile(identifier: String, file: PsiFile): Array<PsiElement>? {
@@ -63,7 +69,9 @@ class CuteResolveUtil {
             val namespaces = getAllNamespaces(project)
             val fileIndex = FileBasedIndex.getInstance()
             val target = namespaces.find { namespace == it } ?: return null
-            val virtualFile = fileIndex.getContainingFiles(TEMPLATE_CACHE_INDEX, target, ProjectScope.getProjectScope(project)).first()
+            val virtualFile = fileIndex
+                    .getContainingFiles(TEMPLATE_CACHE_INDEX, target, ProjectScope.getProjectScope(project))
+                    .firstOrNull() ?: return null
             val cuteFile = PsiManager.getInstance(project).findFile(virtualFile) as? CuteFile ?: return null
             return cuteFile.templateNamespaceIdentifier()
         }

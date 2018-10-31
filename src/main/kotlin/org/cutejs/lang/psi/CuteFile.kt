@@ -11,10 +11,10 @@ import org.cutejs.lang.CuteFileType
 import org.cutejs.lang.psi.impl.CuteStatementImpl
 
 class CuteFile(viewProvider: FileViewProvider) : PsiFileBase(viewProvider, CuteLanguage.INSTANCE) {
-    private var generatedFile: PsiFile? = null
+    private var generatedFile: CuteGeneratedFile? = null
 
-    fun getOrFindGeneratedFile(): PsiFile? {
-        if (generatedFile == null || generatedFile?.virtualFile?.exists() == false) {
+    fun getOrFindGeneratedFile(): CuteGeneratedFile? {
+        if (generatedFile == null || generatedFile?.file?.virtualFile?.exists() == false) {
             generatedFile = findGeneratedFile()
         }
 
@@ -36,7 +36,7 @@ class CuteFile(viewProvider: FileViewProvider) : PsiFileBase(viewProvider, CuteL
         return namespace?.namespaceArgs?.namespaceIdentifier
     }
 
-    private fun findGeneratedFile(): PsiFile? {
+    private fun findGeneratedFile(): CuteGeneratedFile? {
         val templateNamespace = templateNamespaceIdentifier()?.text ?: return null
         return CuteResolveUtil.findGeneratedFileByNamespace(templateNamespace, project)
     }
