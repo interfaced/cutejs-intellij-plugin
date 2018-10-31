@@ -19,13 +19,15 @@ Associated file extension is **.jst**
 
 ## Build
 
-For build and bundle plugin in zip archive (will located in `build/distributions`)
+**Requirements:** Java 8
+
+To build and bundle plugin in zip archive (will located in `build/distributions`)
 
 ```
 ./gradlew buildPlugin
 ```
 
-For run IntelliJ IDEA with bundled plugin for test
+To run IntelliJ IDEA with bundled plugin
 
 By default `runIde` will try to launch WebStorm in `/Applications/WebStorm.app` (path to your ide can be changed in `build.gradle` file)
 
