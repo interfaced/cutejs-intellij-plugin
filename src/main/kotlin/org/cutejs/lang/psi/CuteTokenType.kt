@@ -6,5 +6,5 @@ import org.jetbrains.annotations.*
 import org.cutejs.lang.CuteLanguage
 
 class CuteTokenType(@NonNls debugName: String) : IElementType(debugName, CuteLanguage.INSTANCE) {
-    override fun toString(): String = "CuteTokenType.${super.toString()}"
+    override fun toString(): String = "Cute:${super.toString()}"
 }

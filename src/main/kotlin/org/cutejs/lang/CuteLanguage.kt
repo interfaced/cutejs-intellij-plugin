@@ -5,7 +5,7 @@ import com.intellij.openapi.fileTypes.LanguageFileType
 import com.intellij.openapi.fileTypes.StdFileTypes
 import com.intellij.psi.templateLanguages.TemplateLanguage
 
-class CuteLanguage : Language("CuteJSTemplate", "application/x-cutejs-template"), TemplateLanguage {
+class CuteLanguage : Language("CuteTemplate", "application/x-cutejs-template"), TemplateLanguage {
     override fun getAssociatedFileType(): LanguageFileType? {
         return CuteFileType.INSTANCE
     }

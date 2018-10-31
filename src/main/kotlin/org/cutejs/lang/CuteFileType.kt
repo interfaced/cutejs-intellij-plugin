@@ -7,7 +7,7 @@ import org.cutejs.ide.icons.CuteIcons
 
 open class CuteFileType : LanguageFileType(CuteLanguage.INSTANCE) {
     override fun getName(): String {
-        return "CuteJSTemplate"
+        return "CuteTemplate"
     }
 
     override fun getDescription(): String {

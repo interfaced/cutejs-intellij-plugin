@@ -6,10 +6,8 @@ import com.intellij.lang.javascript.inspections.UnterminatedStatementJSInspectio
 import com.sixrr.inspectjs.validity.BadExpressionStatementJSInspection
 import com.sixrr.inspectjs.validity.ThisExpressionReferencesGlobalObjectJSInspection
 
-class CuteInnerJSInspectionFilter : IntentionAndInspectionFilter() {
+class CuteJSInspectionFilter : IntentionAndInspectionFilter() {
     private val unsupportedInspectionIDs = listOf(
-            InspectionProfileEntry.getShortName(BadExpressionStatementJSInspection::class.java.simpleName),
-            InspectionProfileEntry.getShortName(UnterminatedStatementJSInspection::class.java.simpleName),
             InspectionProfileEntry.getShortName(ThisExpressionReferencesGlobalObjectJSInspection::class.java.simpleName)
     )
 

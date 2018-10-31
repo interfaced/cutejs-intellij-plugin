@@ -5,4 +5,4 @@ import com.intellij.lexer.MergingLexerAdapter
 import com.intellij.psi.tree.TokenSet
 import org.cutejs.lang.psi.CuteTypes
 
-class CuteLexer : MergingLexerAdapter(FlexAdapter(_CuteLexer()), TokenSet.create(CuteTypes.COMMENT))
+class CuteLexer : MergingLexerAdapter(FlexAdapter(_CuteLexer()), TokenSet.EMPTY)

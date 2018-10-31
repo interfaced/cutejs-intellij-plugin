@@ -4,7 +4,7 @@ import com.intellij.openapi.editor.colors.EditorColorsScheme
 import com.intellij.openapi.editor.ex.util.LayerDescriptor
 import com.intellij.openapi.editor.ex.util.LayeredLexerEditorHighlighter
 import com.intellij.openapi.fileTypes.FileType
-import com.intellij.openapi.fileTypes.StdFileTypes
+import com.intellij.openapi.fileTypes.StdFileTypes.*
 import com.intellij.openapi.fileTypes.SyntaxHighlighterFactory
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
@@ -17,7 +17,7 @@ class CuteLayeredHighlighter(project: Project?, virtualFile: VirtualFile?, color
         var type: FileType? = null
 
         if (project == null || virtualFile == null) {
-            type = StdFileTypes.PLAIN_TEXT
+            type = PLAIN_TEXT
         } else {
             val language = TemplateDataLanguageMappings.getInstance(project).getMapping(virtualFile)
             if (language != null) {
@@ -28,13 +28,12 @@ class CuteLayeredHighlighter(project: Project?, virtualFile: VirtualFile?, color
             }
         }
 
-        val jsHighlighter = SyntaxHighlighterFactory.getSyntaxHighlighter(StdFileTypes.JS, project, virtualFile)
-        registerLayer(T_TEMPLATE_JAVASCRIPT_CODE, LayerDescriptor(jsHighlighter, ";\n"))
-        registerLayer(T_TEMPLATE_JAVASCRIPT_LIKE_CODE, LayerDescriptor(jsHighlighter, ";\n"))
+        val jsHighlighter = SyntaxHighlighterFactory.getSyntaxHighlighter(JS, project, virtualFile)
+        registerLayer(T_EVAL_CHAR, LayerDescriptor(jsHighlighter, ""))
 
         if (type != null) {
             val outerHighlighter = SyntaxHighlighterFactory.getSyntaxHighlighter(type, project, virtualFile)
-            registerLayer(T_TEMPLATE_HTML_CODE, LayerDescriptor(outerHighlighter, ""))
+            registerLayer(T_DATA, LayerDescriptor(outerHighlighter, ""))
         }
     }
 }
