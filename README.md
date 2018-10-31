@@ -7,28 +7,7 @@ Associated file extension is **.jst**
 ## Features
 
 - [x] Syntax highlighting
-  - [x] Open/close template block braces
-  - [x] HTML markup
-  - [x] JS code inside template blocks
-  - [x] Custom highlighting:
-    - [x] type annotation blocks
-    - [x] export blocks
-    - [x] inline component blocks
-- [x] Supporting custom attributes for HTML elements: *data-export-id*, *data-component*
-- [x] Brace matching for template block braces
-- [x] Auto-closing template block braces after typing *{{*
-- [x] Complete HTML markup support (means working tags autocompletion etc.)
-- [x] JS code analysis (means syntax errors annotations, autocompletion, go-to-declaration etc.)
-- [x] Custom icon for jst files
-- [ ] Providing reference on template declaration in jst file (go-to-declaration from js files to jst)
-- [ ] Providing predefined libs such as `cuteJs` in jst files (for js injections)
-- [ ] Smart scope providing for js injections (binding with template compiled code)
-  
-## Issues
-
-- No tests
-- Auto-closing braces may put unnecessary last brace
-  - Fix: disable `Insert paired braces` in ide preferences
+- [x] Go to template declaration from JS reference
 
 ## Install
 
