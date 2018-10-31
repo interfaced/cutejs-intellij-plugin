@@ -8,12 +8,12 @@ buildscript {
 
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "com.github.JetBrains:gradle-grammar-kit-plugin:2018.1.7"
     }
 }
 
 plugins {
-    id 'org.jetbrains.intellij' version '0.3.1'
+    id 'org.jetbrains.intellij' version '0.3.4'
+    id "org.jetbrains.grammarkit" version "2018.2"
 }
 
 group 'org.cutejs'
