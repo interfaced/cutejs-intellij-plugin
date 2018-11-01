@@ -55,9 +55,12 @@ intellij {
 
 patchPluginXml {
     changeNotes """
-      Changes:<br>
+      Features:<br>
       <ul>
-        <li>Parser reborn</li>
+        <li>Syntax highlighting</li>
+        <li>Blocks folding</li>
+        <li>Go-to-template by JS references</li>
+        <li>Go-to-declaration by references in template</li>
       </ul>
       
       <a href="https://github.com/interfaced/cutejs-intellij-plugin">More info ...</a>

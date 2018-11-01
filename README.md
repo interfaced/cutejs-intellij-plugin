@@ -2,12 +2,14 @@
 
 ## Info
 
-Associated file extension is **.jst**
+Plugin provides support for CuteJS templates
 
 ## Features
 
-- [x] Syntax highlighting
-- [x] Go to template declaration from JS reference
+* Syntax highlighting
+* Blocks folding
+* Go-to-template by JS references
+* Go-to-declaration by references in template
 
 ## Install
 

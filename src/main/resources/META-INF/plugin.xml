@@ -22,8 +22,9 @@
         <lang.parserDefinition language="CuteJS" implementationClass="org.cutejs.lang.parser.CuteJSParserDefinition"/>
         <lang.syntaxHighlighterFactory language="CuteTemplate" implementationClass="org.cutejs.ide.highlight.CuteHighlighterFactory"/>
         <lang.braceMatcher language="CuteTemplate" implementationClass="org.cutejs.ide.CuteBraceMatcher"/>
-        <editorHighlighterProvider filetype="CuteTemplate" implementationClass="org.cutejs.ide.highlight.CuteEditorHighlighterProvider"/>
         <lang.fileViewProviderFactory language="CuteTemplate" implementationClass="org.cutejs.file.CuteFileViewProviderFactory"/>
+        <lang.foldingBuilder language="CuteTemplate" implementationClass="org.cutejs.ide.folding.CuteFoldingBuilder"/>
+        <editorHighlighterProvider filetype="CuteTemplate" implementationClass="org.cutejs.ide.highlight.CuteEditorHighlighterProvider"/>
         <gotoDeclarationHandler implementation="org.cutejs.ide.codeInsight.CuteGotoDeclarationHandler" />
         <highlightVisitor implementation="org.cutejs.ide.highlight.CuteHighlightVisitor"/>
         <psi.referenceContributor language="JavaScript" implementation="org.cutejs.ide.codeInsight.CuteReferenceContributor"/>
