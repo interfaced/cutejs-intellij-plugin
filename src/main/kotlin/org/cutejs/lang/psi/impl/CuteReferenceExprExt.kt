@@ -6,20 +6,18 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiNameIdentifierOwner
 import org.cutejs.lang.psi.CuteElementFactory
 
-open class CuteNamespaceIdentifierExt(node: ASTNode) : ASTWrapperPsiElement(node), PsiNameIdentifierOwner {
-    override fun getName(): String {
-        return lastChild.text
-    }
+open class CuteReferenceExprExt(node: ASTNode) : ASTWrapperPsiElement(node), PsiNameIdentifierOwner {
+    override fun getName(): String = text
 
     override fun setName(newName: String): PsiElement {
-        val identifier = CuteElementFactory.createNamespaceIdentifier(project, newName)
-        val newIdentifierNode = identifier.node
-        parent.node.replaceChild(node, newIdentifierNode)
+        val ref = CuteElementFactory.createNamespace(project, newName).ref
+        val newRefNode = ref.node
+        parent.node.replaceChild(node, newRefNode)
         return this
     }
 
     override fun getNameIdentifier(): PsiElement? {
-        val lastIdentifier = node.lastChildNode
+        val lastIdentifier = firstChild.node.lastChildNode
         return lastIdentifier.psi
     }
 }

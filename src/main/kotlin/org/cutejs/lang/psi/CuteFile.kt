@@ -3,11 +3,11 @@ package org.cutejs.lang.psi
 import com.intellij.extapi.psi.PsiFileBase
 import com.intellij.openapi.fileTypes.FileType
 import com.intellij.psi.FileViewProvider
-import com.intellij.psi.PsiFile
 import com.intellij.psi.util.PsiTreeUtil
 
 import org.cutejs.lang.CuteLanguage
 import org.cutejs.lang.CuteFileType
+import org.cutejs.lang.psi.impl.CuteNamespaceImpl
 import org.cutejs.lang.psi.impl.CuteStatementImpl
 
 class CuteFile(viewProvider: FileViewProvider) : PsiFileBase(viewProvider, CuteLanguage.INSTANCE) {
@@ -29,15 +29,13 @@ class CuteFile(viewProvider: FileViewProvider) : PsiFileBase(viewProvider, CuteL
         return "CuteJSFile:${this.name}"
     }
 
-    fun templateNamespaceIdentifier(): CuteNamespaceIdentifier? {
+    fun templateNamespace(): CuteNamespace? {
         val statement = PsiTreeUtil.getChildOfType(this, CuteStatementImpl::class.java)
-        val namespace = statement?.expression?.namespace
-
-        return namespace?.namespaceArgs?.namespaceIdentifier
+        return statement?.expression?.namespace
     }
 
     private fun findGeneratedFile(): CuteGeneratedFile? {
-        val templateNamespace = templateNamespaceIdentifier()?.text ?: return null
+        val templateNamespace = templateNamespace()?.ref?.text ?: return null
         return CuteResolveUtil.findGeneratedFileByNamespace(templateNamespace, project)
     }
 }
