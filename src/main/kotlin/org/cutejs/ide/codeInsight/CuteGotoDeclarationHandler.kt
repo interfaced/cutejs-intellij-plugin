@@ -21,14 +21,14 @@ class CuteGotoDeclarationHandler : GotoDeclarationHandler {
         val isChildOfExport = getParentOfType(element, CuteExportArgsImpl::class.java) != null
         val isChildOfTypedef = getParentOfType(element, CuteTypedefImpl::class.java) != null
         val isIdentifier = element?.node?.elementType == T_IDENTIFIER
-        val isLeaf = element?.node?.treeNext == null
+        val isLastNamespaceIdentifier = namespace?.namespaceArgs?.expr?.lastChild == element
 
         if (!(isChildOfNamespace || isChildOfExport || isChildOfTypedef) || !isIdentifier) return null
 
         val cuteFile = element?.containingFile as CuteFile
         val cuteGeneratedFile = cuteFile.getOrFindGeneratedFile() ?: return null
 
-        if (isChildOfNamespace && isLeaf && namespace?.namespaceArgs?.namespaceIdentifier?.text == cuteGeneratedFile.namespace) {
+        if (isChildOfNamespace && isLastNamespaceIdentifier && namespace?.namespaceArgs?.text == cuteGeneratedFile.namespace) {
             return arrayOf(cuteGeneratedFile.file.firstChild)
         } else if (isChildOfExport || isChildOfTypedef) {
             val identifier = element.node?.text ?: return null

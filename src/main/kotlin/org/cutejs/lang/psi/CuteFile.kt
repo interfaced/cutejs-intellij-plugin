@@ -29,11 +29,11 @@ class CuteFile(viewProvider: FileViewProvider) : PsiFileBase(viewProvider, CuteL
         return "CuteJSFile:${this.name}"
     }
 
-    fun templateNamespaceIdentifier(): CuteNamespaceIdentifier? {
+    fun templateNamespaceIdentifier(): CuteNamespaceArgs? {
         val statement = PsiTreeUtil.getChildOfType(this, CuteStatementImpl::class.java)
         val namespace = statement?.expression?.namespace
 
-        return namespace?.namespaceArgs?.namespaceIdentifier
+        return namespace?.namespaceArgs
     }
 
     private fun findGeneratedFile(): CuteGeneratedFile? {

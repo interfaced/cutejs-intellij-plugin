@@ -7,7 +7,7 @@ import org.cutejs.lang.CuteFileType
 
 class CuteElementFactory {
     companion object {
-        fun createNamespaceIdentifier(project: Project, namespace: String): CuteNamespaceIdentifier {
+        fun createNamespaceIdentifier(project: Project, namespace: String): CuteNamespaceArgs {
             val file = createFile(project, "{{$$namespace}}")
             return file.templateNamespaceIdentifier()!!
         }

@@ -65,7 +65,7 @@ class CuteResolveUtil {
                     .toTypedArray()
         }
 
-        fun findNamespaceDeclaration(project: Project, namespace: String): CuteNamespaceIdentifier? {
+        fun findNamespaceDeclaration(project: Project, namespace: String): CuteNamespaceArgs? {
             val namespaces = getAllNamespaces(project)
             val fileIndex = FileBasedIndex.getInstance()
             val target = namespaces.find { namespace == it } ?: return null
