@@ -12,12 +12,13 @@ import org.cutejs.lang.psi.*
 class CuteHighlightVisitor : CuteVisitor(), HighlightVisitor {
     private var infoHolder: HighlightInfoHolder? = null
 
-    override fun visitNamespaceArgs(element: CuteNamespaceArgs) {
+    override fun visitNamespace(element: CuteNamespace) {
+        val ref = element.ref
         val cuteFile = element.containingFile as CuteFile
         val generatedFile = cuteFile.getOrFindGeneratedFile()
 
-        if (generatedFile != null && generatedFile.namespace == element.node.text) {
-            val lastIdentifier = element.expr.lastChild
+        if (generatedFile != null && generatedFile.namespace == ref.node.text) {
+            val lastIdentifier = ref.expr.lastChild
             highlightDeclaration(lastIdentifier)
         }
     }

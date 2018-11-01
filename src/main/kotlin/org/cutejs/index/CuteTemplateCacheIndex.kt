@@ -44,9 +44,9 @@ class MyDataIndexer : DataIndexer<String, Void, FileContent> {
     override fun map(fileContent: FileContent): MutableMap<String, Void> {
         val result = THashMap<String, Void>()
         val psiFile = fileContent.psiFile as? CuteFile ?: return result
-        val namespace = psiFile.templateNamespaceIdentifier() ?: return result
+        val namespace = psiFile.templateNamespace() ?: return result
 
-        result[namespace.text] = null
+        result[namespace.ref.text] = null
         return result
     }
 }

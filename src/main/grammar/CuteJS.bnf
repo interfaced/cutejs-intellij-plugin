@@ -24,14 +24,11 @@ expression ::= (escape|interpolate|typedef|namespace|export|partial|inline|eval_
 escape ::= T_ESCAPE eval_expression
 interpolate ::= T_INTERPOLATE eval_expression
 typedef ::= T_TYPEDEF this_property T_ARRAY_SPECIFIER? T_DOC_TYPE
-namespace ::= T_NAMESPACE namespace_args
+namespace ::= T_NAMESPACE ref
 export ::= T_EXPORT export_args
 partial ::= T_PARTIAL include_args
 inline ::= T_INLINE include_args
-include_args ::= namespace_args T_COMMA eval_expression T_COMMA export_args
-namespace_args ::= expr {
-    extends="org.cutejs.lang.psi.impl.CuteNamespaceIdentifierExt"
-}
+include_args ::= ref T_COMMA eval_expression T_COMMA export_args
 export_args ::= T_IDENTIFIER T_ARRAY_SPECIFIER?
 this_property ::= T_THIS T_DOT T_IDENTIFIER
 
@@ -39,7 +36,10 @@ expr ::= member_ref_expr | identifier_ref_expr
 
 fake ref_expr ::= expr? T_DOT T_IDENTIFIER
 identifier_ref_expr ::= T_IDENTIFIER { extends=ref_expr elementType=ref_expr }
-member_ref_expr ::= expr T_DOT T_IDENTIFIER {extends=ref_expr elementType=ref_expr }
+member_ref_expr ::= expr T_DOT T_IDENTIFIER { extends=ref_expr elementType=ref_expr }
+ref ::= expr {
+    extends="org.cutejs.lang.psi.impl.CuteReferenceExprExt"
+}
 
 data ::= T_DATA+
 eval_data ::= T_EVAL_CHAR+

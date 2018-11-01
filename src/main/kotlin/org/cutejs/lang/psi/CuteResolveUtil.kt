@@ -65,7 +65,7 @@ class CuteResolveUtil {
                     .toTypedArray()
         }
 
-        fun findNamespaceDeclaration(project: Project, namespace: String): CuteNamespaceArgs? {
+        fun findNamespaceDeclaration(project: Project, namespace: String): CuteNamespace? {
             val namespaces = getAllNamespaces(project)
             val fileIndex = FileBasedIndex.getInstance()
             val target = namespaces.find { namespace == it } ?: return null
@@ -73,7 +73,7 @@ class CuteResolveUtil {
                     .getContainingFiles(TEMPLATE_CACHE_INDEX, target, ProjectScope.getProjectScope(project))
                     .firstOrNull() ?: return null
             val cuteFile = PsiManager.getInstance(project).findFile(virtualFile) as? CuteFile ?: return null
-            return cuteFile.templateNamespaceIdentifier()
+            return cuteFile.templateNamespace()
         }
     }
 }
