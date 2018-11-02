@@ -29,6 +29,7 @@
         <highlightVisitor implementation="org.cutejs.ide.highlight.CuteHighlightVisitor"/>
         <psi.referenceContributor language="JavaScript" implementation="org.cutejs.ide.codeInsight.CuteReferenceContributor"/>
         <stubElementTypeHolder class="org.cutejs.lang.CuteElementTypes"/>
+        <codeInsight.lineMarkerProvider language="JavaScript" implementationClass="org.cutejs.ide.codeInsight.CuteLineMarkerProvider"/>
     </extensions>
 
     <extensions defaultExtensionNs="JavaScript">
