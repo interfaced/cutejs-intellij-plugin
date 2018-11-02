@@ -7,7 +7,7 @@ import com.intellij.psi.PsiNameIdentifierOwner
 import org.cutejs.lang.psi.CuteElementFactory
 
 open class CuteReferenceExprExt(node: ASTNode) : ASTWrapperPsiElement(node), PsiNameIdentifierOwner {
-    override fun getName(): String = text
+    override fun getName(): String = firstChild.lastChild.text
 
     override fun setName(newName: String): PsiElement {
         val ref = CuteElementFactory.createNamespace(project, newName).ref
