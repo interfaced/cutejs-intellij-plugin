@@ -9,7 +9,7 @@ class CuteJSNamespaceReference(element: PsiElement) : PsiReferenceBase<PsiElemen
     override fun multiResolve(incomplete: Boolean): Array<ResolveResult> {
         val project = element.project
         val namespace = CuteResolveUtil.findNamespaceDeclaration(project, key) ?: return emptyArray()
-        val templateDeclaration = arrayOf(PsiElementResolveResult(namespace) as ResolveResult)
+        val templateDeclaration = arrayOf(PsiElementResolveResult(namespace.ref) as ResolveResult)
         val expression = element as? JSReferenceExpressionImpl ?: return templateDeclaration
 
         return templateDeclaration.plus(CuteResolveUtil.findNamespaceGeneratedDeclaration(expression))
