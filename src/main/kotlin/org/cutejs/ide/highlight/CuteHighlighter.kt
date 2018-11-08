@@ -24,6 +24,7 @@ class CuteHighlighter : SyntaxHighlighterBase() {
             T_INTERPOLATE,
             T_INLINE,
             T_THIS,
+            T_IMPORT,
             T_PARTIAL -> KEYWORD_KEYS
             T_IDENTIFIER -> IDENTIFIER_KEYS
             T_COMMA -> COMMA_KEYS

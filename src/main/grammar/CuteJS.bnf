@@ -18,6 +18,7 @@
     T_CLOSE = '}}'
     T_OPEN = '{{'
     T_OUTER_DATA = 'outer'
+    T_IMPORT = '+'
     T_ESCAPE = '-'
     T_INTERPOLATE = '='
     T_TYPEDEF = '*'
@@ -41,8 +42,9 @@ JSTemplate ::= item_*
 private item_ ::= 'outer'|statement|data
 
 statement ::= '{{' expression? '}}'
-expression ::= escape|interpolate|typedef|namespace|export|partial|inline|'eval'
+expression ::= import|escape|interpolate|typedef|namespace|export|partial|inline|'eval'
 
+import      ::= '+' 'eval'
 escape      ::= '-' 'eval_expr'
 interpolate ::= '=' 'eval_expr'
 typedef     ::= '*' this_property '[]'? 'type'

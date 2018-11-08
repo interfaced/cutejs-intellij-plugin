@@ -28,6 +28,7 @@ Open = "{{"
 Close = "}}"
 LBrack = "["
 RBrack = "]"
+Import = "+"
 Escape = "-"
 Interpolate = "="
 Typedef = "*"
@@ -48,6 +49,7 @@ IncludeClose = {Comma}{WhiteSpace}*{Identifier}{ArraySpecifier}?{WhiteSpace}*{Cl
 <YYINITIAL> {Open} { yybegin(EXPRESSION_START); return T_OPEN; }
 
 <EXPRESSION_START> {
+    {Import} { yybegin(EVAL); return T_IMPORT; }
     {Escape} { yybegin(EVAL_EXPRESSION); return T_ESCAPE; }
     {Interpolate} { yybegin(EVAL_EXPRESSION); return T_INTERPOLATE; }
     {Typedef} { yybegin(TYPEDEF); return T_TYPEDEF; }
