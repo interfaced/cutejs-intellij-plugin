@@ -24,11 +24,11 @@ class CuteHighlightVisitor : CuteVisitor(), HighlightVisitor {
     }
 
     override fun visitExportArgs(element: CuteExportArgs) {
-        highlightPropertyIfResolved(element.firstChild)
+        highlightProperty(element.firstChild)
     }
 
     override fun visitTypedef(element: CuteTypedef) {
-        highlightPropertyIfResolved(element.thisProperty.lastChild)
+        highlightProperty(element.thisProperty.lastChild)
     }
 
     override fun visit(element: PsiElement) {
@@ -49,15 +49,6 @@ class CuteHighlightVisitor : CuteVisitor(), HighlightVisitor {
     override fun suitableForFile(file: PsiFile): Boolean = file is CuteFile
 
     override fun order(): Int = 1
-
-    private fun highlightPropertyIfResolved(element: PsiElement) {
-        val cuteFile = element.containingFile as CuteFile
-        val generatedFile = cuteFile.getOrFindGeneratedFile() ?: return
-
-        if (CuteResolveUtil.findElementsInFile(element.node.text, generatedFile.file) != null) {
-            highlightProperty(element)
-        }
-    }
 
     private fun highlightProperty(element: PsiElement) {
         val builder = HighlightInfo.newHighlightInfo(HighlightInfoType.INFORMATION)
