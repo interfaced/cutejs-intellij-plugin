@@ -22,9 +22,9 @@ class CuteJSElementType(
         val result = StringBuilder(sourceCode.length)
         baseLexer.start(sourceCode)
 
-        // idk, why ES6 parser require wrapping code into block-statement, but is necessary for arrow-functions
-        result.append("{")
-        rangeCollector.addRangeToRemove(TextRange(0, 1))
+        // idk, why ES6 parser require wrapping code into block-statement, but is necessary for arrow-functions parsing
+        // result.append("{")
+        // rangeCollector.addRangeToRemove(TextRange(0, 1))
 
         var currentRange = TextRange.EMPTY_RANGE
         while (baseLexer.tokenType != null) {
@@ -43,8 +43,8 @@ class CuteJSElementType(
             baseLexer.advance()
         }
 
-        result.append("}")
-        rangeCollector.addRangeToRemove(TextRange(currentRange.endOffset, currentRange.endOffset + 1))
+        // result.append("}")
+        // rangeCollector.addRangeToRemove(TextRange(currentRange.endOffset, currentRange.endOffset + 1))
         return result
     }
 
