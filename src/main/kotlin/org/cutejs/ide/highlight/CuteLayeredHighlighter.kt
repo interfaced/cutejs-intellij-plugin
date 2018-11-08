@@ -29,7 +29,8 @@ class CuteLayeredHighlighter(project: Project?, virtualFile: VirtualFile?, color
         }
 
         val jsHighlighter = SyntaxHighlighterFactory.getSyntaxHighlighter(JS, project, virtualFile)
-        registerLayer(T_EVAL_CHAR, LayerDescriptor(jsHighlighter, ""))
+        registerLayer(T_EVAL, LayerDescriptor(jsHighlighter, ""))
+        registerLayer(T_EVAL_EXPRESSION, LayerDescriptor(jsHighlighter, ";"))
 
         if (type != null) {
             val outerHighlighter = SyntaxHighlighterFactory.getSyntaxHighlighter(type, project, virtualFile)
