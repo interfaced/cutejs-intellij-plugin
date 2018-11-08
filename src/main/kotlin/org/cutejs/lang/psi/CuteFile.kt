@@ -7,7 +7,6 @@ import com.intellij.psi.util.PsiTreeUtil
 
 import org.cutejs.lang.CuteLanguage
 import org.cutejs.lang.CuteFileType
-import org.cutejs.lang.psi.impl.CuteNamespaceImpl
 import org.cutejs.lang.psi.impl.CuteStatementImpl
 
 class CuteFile(viewProvider: FileViewProvider) : PsiFileBase(viewProvider, CuteLanguage.INSTANCE) {
