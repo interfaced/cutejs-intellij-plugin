@@ -13,34 +13,55 @@
 
   consumeTokenMethod(".+_expr|expr")="consumeTokenFast"
   extends(".+expr")=expr
+
+  tokens = [
+    T_CLOSE = '}}'
+    T_OPEN = '{{'
+    T_OUTER_DATA = 'outer'
+    T_ESCAPE = '-'
+    T_INTERPOLATE = '='
+    T_TYPEDEF = '*'
+    T_NAMESPACE = '$'
+    T_EXPORT = '@'
+    T_INLINE = '%'
+    T_PARTIAL = '#'
+    T_ARRAY_SPECIFIER = '[]'
+    T_DOC_TYPE = 'type'
+    T_COMMA = ','
+    T_DOT = '.'
+    T_IDENTIFIER = 'ident'
+    T_THIS = 'this'
+    T_EVAL = 'eval'
+    T_EVAL_EXPRESSION = 'eval_expr'
+  ]
 }
 
 JSTemplate ::= item_*
 
-private item_ ::= (T_OUTER_DATA|statement|data)
+private item_ ::= 'outer'|statement|data
 
-statement ::= T_OPEN expression? T_CLOSE
-expression ::= (escape|interpolate|typedef|namespace|export|partial|inline|eval_data)
-escape ::= T_ESCAPE eval_expression
-interpolate ::= T_INTERPOLATE eval_expression
-typedef ::= T_TYPEDEF this_property T_ARRAY_SPECIFIER? T_DOC_TYPE
-namespace ::= T_NAMESPACE ref
-export ::= T_EXPORT export_args
-partial ::= T_PARTIAL include_args
-inline ::= T_INLINE include_args
-include_args ::= ref T_COMMA eval_expression T_COMMA export_args
-export_args ::= T_IDENTIFIER T_ARRAY_SPECIFIER?
-this_property ::= T_THIS T_DOT T_IDENTIFIER
+statement ::= '{{' expression? '}}'
+expression ::= escape|interpolate|typedef|namespace|export|partial|inline|'eval'
+
+escape      ::= '-' 'eval_expr'
+interpolate ::= '=' 'eval_expr'
+typedef     ::= '*' this_property '[]'? 'type'
+namespace   ::= '$' ref
+export      ::= '@' export_args
+partial     ::= '#' include_args
+inline      ::= '%' include_args
+
+include_args ::= ref ',' 'eval_expr' ',' export_args
+export_args ::= 'ident' '[]'?
+this_property ::= 'this' '.' 'ident'
 
 expr ::= member_ref_expr | identifier_ref_expr
 
-fake ref_expr ::= expr? T_DOT T_IDENTIFIER
-identifier_ref_expr ::= T_IDENTIFIER { extends=ref_expr elementType=ref_expr }
-member_ref_expr ::= expr T_DOT T_IDENTIFIER { extends=ref_expr elementType=ref_expr }
+fake ref_expr ::= expr? '.' 'ident'
+identifier_ref_expr ::= 'ident' { extends=ref_expr elementType=ref_expr }
+member_ref_expr ::= expr '.' 'ident' { extends=ref_expr elementType=ref_expr }
 ref ::= expr {
     extends="org.cutejs.lang.psi.impl.CuteReferenceExprExt"
 }
 
 data ::= T_DATA+
-eval_data ::= T_EVAL_CHAR+
-eval_expression ::= T_EVAL_EXPRESSION_CHAR+

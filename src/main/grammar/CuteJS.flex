@@ -61,14 +61,17 @@ IncludeClose = {Comma}{WhiteSpace}*{Identifier}{ArraySpecifier}?{WhiteSpace}*{Cl
 
 <INCLUDE> {Comma} { yybegin(INCLUDE_INPUT); return T_COMMA; }
 <INCLUDE_INPUT> {
-    {IncludeClose} { yypushback(yylength()); yybegin(EXPRESSION); }
-    [^] { return T_EVAL_EXPRESSION_CHAR; }
+    {IncludeClose} { yypushback(yylength()); yybegin(EXPRESSION); return T_EVAL_EXPRESSION; }
+    [^] { break; }
 }
-
-<EVAL, EVAL_EXPRESSION> {Close} { yypushback(2); yybegin(EXPRESSION); }
-
-<EVAL> [^] { return T_EVAL_CHAR; }
-<EVAL_EXPRESSION> [^] { return T_EVAL_EXPRESSION_CHAR; }
+<EVAL> {
+    {Close} { yypushback(2); yybegin(EXPRESSION); return T_EVAL; }
+    [^] { break; }
+}
+<EVAL_EXPRESSION> {
+    {Close} { yypushback(2); yybegin(EXPRESSION); return T_EVAL_EXPRESSION; }
+    [^] { break; }
+}
 
 <TYPEDEF> {
     {This} { return T_THIS; }
