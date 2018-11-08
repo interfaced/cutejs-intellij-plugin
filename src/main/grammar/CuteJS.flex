@@ -42,7 +42,7 @@ Comma = ","
 ArraySpecifier = {LBrack}{RBrack}
 IncludeClose = {Comma}{WhiteSpace}*{Identifier}{ArraySpecifier}?{WhiteSpace}*{Close}
 
-%state EXPRESSION_START, EXPRESSION, INCLUDE, INCLUDE_INPUT, TYPEDEF, DOC_TYPE, EVAL, EVAL_EXPRESSION
+%state EXPRESSION_START, EXPRESSION, INCLUDE, INCLUDE_INPUT, INCLUDE_CLOSE_CHECK, TYPEDEF, DOC_TYPE, EVAL, EVAL_EXPRESSION
 %%
 
 <YYINITIAL> {Open} { yybegin(EXPRESSION_START); return T_OPEN; }
@@ -59,19 +59,16 @@ IncludeClose = {Comma}{WhiteSpace}*{Identifier}{ArraySpecifier}?{WhiteSpace}*{Cl
     [^] { yypushback(1); yybegin(EVAL); }
 }
 
-<INCLUDE> {Comma} { yybegin(INCLUDE_INPUT); return T_COMMA; }
+<INCLUDE> {Comma} { yybegin(INCLUDE_CLOSE_CHECK); return T_COMMA; }
+<INCLUDE_CLOSE_CHECK> {
+    ~{IncludeClose} { yypushback(yylength()); yybegin(INCLUDE_INPUT); }
+}
 <INCLUDE_INPUT> {
     {IncludeClose} { yypushback(yylength()); yybegin(EXPRESSION); return T_EVAL_EXPRESSION; }
     [^] { break; }
 }
-<EVAL> {
-    {Close} { yypushback(2); yybegin(EXPRESSION); return T_EVAL; }
-    [^] { break; }
-}
-<EVAL_EXPRESSION> {
-    {Close} { yypushback(2); yybegin(EXPRESSION); return T_EVAL_EXPRESSION; }
-    [^] { break; }
-}
+<EVAL> ~{Close} { yypushback(2); yybegin(EXPRESSION); return T_EVAL; }
+<EVAL_EXPRESSION> ~{Close} { yypushback(2); yybegin(EXPRESSION); return T_EVAL_EXPRESSION; }
 
 <TYPEDEF> {
     {This} { return T_THIS; }
