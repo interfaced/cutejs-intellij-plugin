@@ -8,7 +8,9 @@ import com.sixrr.inspectjs.validity.ThisExpressionReferencesGlobalObjectJSInspec
 
 class CuteJSInspectionFilter : IntentionAndInspectionFilter() {
     private val unsupportedInspectionIDs = listOf(
-            InspectionProfileEntry.getShortName(ThisExpressionReferencesGlobalObjectJSInspection::class.java.simpleName)
+            InspectionProfileEntry.getShortName(ThisExpressionReferencesGlobalObjectJSInspection::class.java.simpleName),
+            InspectionProfileEntry.getShortName(BadExpressionStatementJSInspection::class.java.simpleName),
+            InspectionProfileEntry.getShortName(UnterminatedStatementJSInspection::class.java.simpleName)
     )
 
     override fun isSupportedInspection(inspectionToolId: String?) = !unsupportedInspectionIDs.contains(inspectionToolId)
