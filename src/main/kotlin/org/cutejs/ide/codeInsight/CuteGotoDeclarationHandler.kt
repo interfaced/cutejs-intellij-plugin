@@ -16,23 +16,28 @@ class CuteGotoDeclarationHandler : GotoDeclarationHandler {
     }
 
     override fun getGotoDeclarationTargets(element: PsiElement?, p1: Int, editor: Editor?): Array<PsiElement>? {
-        val namespace = getParentOfType(element, CuteNamespaceImpl::class.java)
-        val isChildOfNamespace = namespace != null
+        val ref = getParentOfType(element, CuteRefImpl::class.java)
         val isChildOfExport = getParentOfType(element, CuteExportArgsImpl::class.java) != null
         val isChildOfTypedef = getParentOfType(element, CuteTypedefImpl::class.java) != null
         val isIdentifier = element?.node?.elementType == T_IDENTIFIER
-        val isLastNamespaceIdentifier = namespace?.ref?.expr?.lastChild == element
+        val isLastRefIdentifier = when {
+            ref != null -> ref.expr.lastChild == element
+            else -> false
+        }
 
-        if (!(isChildOfNamespace || isChildOfExport || isChildOfTypedef) || !isIdentifier) return null
+        if (!isIdentifier) return null
 
-        val cuteFile = element?.containingFile as CuteFile
-        val cuteGeneratedFile = cuteFile.getOrFindGeneratedFile() ?: return null
+        if (isChildOfExport || isChildOfTypedef) {
+            val cuteFile = element?.containingFile as CuteFile
+            val cuteGeneratedFile = cuteFile.getOrFindGeneratedFile() ?: return null
 
-        if (isChildOfNamespace && isLastNamespaceIdentifier && namespace?.ref?.text == cuteGeneratedFile.namespace) {
-            return arrayOf(cuteGeneratedFile.file.firstChild)
-        } else if (isChildOfExport || isChildOfTypedef) {
             val identifier = element.node?.text ?: return null
             return CuteResolveUtil.findElementsInFile(identifier, cuteGeneratedFile.file)
+        }
+
+        if (ref != null && isLastRefIdentifier) {
+            val resolved = CuteResolveUtil.resolveReference(ref) ?: return null
+            return arrayOf(resolved)
         }
 
         return null
