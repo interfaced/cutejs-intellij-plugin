@@ -59,8 +59,8 @@ patchPluginXml {
       <ul>
         <li>Syntax highlighting</li>
         <li>Blocks folding</li>
-        <li>Go-to-template by JS references</li>
         <li>Go-to-declaration by references in template</li>
+        <li>Line-marker for template references (with ability to go-to template)</li>
       </ul>
       
       <a href="https://github.com/interfaced/cutejs-intellij-plugin">More info ...</a>

@@ -8,7 +8,7 @@ Plugin provides support for CuteJS templates
 
 * Syntax highlighting
 * Blocks folding
-* Go-to-template by JS references
+* Line-marker for template references (with ability to go-to template)
 * Go-to-declaration by references in template
 
 ## Install
