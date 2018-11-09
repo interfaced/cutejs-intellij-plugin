@@ -16,8 +16,7 @@ class CuteJSLanguage private constructor() : JSLanguageDialect("CuteJS", Dialect
         return "js"
     }
 
-    override fun createParser(builder: PsiBuilder): JavaScriptParser<*, *, *, *> {
-        return ES6Parser<
+    override fun createParser(builder: PsiBuilder): JavaScriptParser<*, *, *, *> { return ES6Parser<
                 ES6ExpressionParser<*>,
                 ES6StatementParser<*>,
                 ES6FunctionParser<*>,
