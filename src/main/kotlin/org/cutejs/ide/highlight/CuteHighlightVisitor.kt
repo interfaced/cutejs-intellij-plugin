@@ -27,6 +27,15 @@ class CuteHighlightVisitor : CuteVisitor(), HighlightVisitor {
         highlightProperty(element.firstChild)
     }
 
+    override fun visitIncludeArgs(o: CuteIncludeArgs) {
+        val ref = o.ref
+
+        if (CuteResolveUtil.resolveReference(ref) != null) {
+            val lastIdentifier = ref.expr.lastChild
+            highlightDeclaration(lastIdentifier)
+        }
+    }
+
     override fun visitTypedef(element: CuteTypedef) {
         highlightProperty(element.thisProperty.lastChild)
     }
