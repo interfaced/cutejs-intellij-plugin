@@ -61,16 +61,6 @@ class CuteResolveUtil {
             return resolveJSReference(refExpr)?.mapNotNull { it.element }?.firstOrNull()
         }
 
-        fun getAllNamespaces(project: Project): MutableCollection<String> {
-            return FileBasedIndex.getInstance().getAllKeys(TEMPLATE_CACHE_INDEX, project)
-        }
-
-        fun resolveJSReferenceInGenerated(expression: JSReferenceExpressionImpl): Array<ResolveResult> {
-            return resolveJSReference(expression)
-                    ?.filter { it.element?.containingFile?.name?.endsWith(GENERATED_EXTENSION) == true }
-                    ?.toTypedArray() ?: emptyArray()
-        }
-
         fun findNamespaceDeclaration(project: Project, namespace: String): CuteNamespace? {
             val namespaces = getAllNamespaces(project)
             val fileIndex = FileBasedIndex.getInstance()
@@ -86,6 +76,10 @@ class CuteResolveUtil {
             return JSResolveUtil.resolve(expression.containingFile, expression, object : JSReferenceExpressionResolver(expression, false) {
                 override fun resolveFromProviders(): Array<ResolveResult>? = null
             }, false)
+        }
+
+        private fun getAllNamespaces(project: Project): MutableCollection<String> {
+            return FileBasedIndex.getInstance().getAllKeys(TEMPLATE_CACHE_INDEX, project)
         }
     }
 }

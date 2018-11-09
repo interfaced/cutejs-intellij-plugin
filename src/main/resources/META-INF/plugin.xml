@@ -27,7 +27,6 @@
         <editorHighlighterProvider filetype="CuteTemplate" implementationClass="org.cutejs.ide.highlight.CuteEditorHighlighterProvider"/>
         <gotoDeclarationHandler implementation="org.cutejs.ide.codeInsight.CuteGotoDeclarationHandler" />
         <highlightVisitor implementation="org.cutejs.ide.highlight.CuteHighlightVisitor"/>
-        <psi.referenceContributor language="JavaScript" implementation="org.cutejs.ide.codeInsight.CuteReferenceContributor"/>
         <stubElementTypeHolder class="org.cutejs.lang.CuteElementTypes"/>
         <codeInsight.lineMarkerProvider language="JavaScript" implementationClass="org.cutejs.ide.codeInsight.CuteLineMarkerProvider"/>
     </extensions>
