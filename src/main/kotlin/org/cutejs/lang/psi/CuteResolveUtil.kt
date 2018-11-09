@@ -1,5 +1,7 @@
 package org.cutejs.lang.psi
 
+import com.intellij.lang.javascript.psi.impl.JSChangeUtil
+import com.intellij.lang.javascript.psi.impl.JSExpressionStatementImpl
 import com.intellij.lang.javascript.psi.impl.JSReferenceExpressionImpl
 import com.intellij.lang.javascript.psi.resolve.JSClassResolver.findElementsByNameIncludingImplicit
 import com.intellij.lang.javascript.psi.resolve.JSReferenceExpressionResolver
@@ -51,18 +53,22 @@ class CuteResolveUtil {
             return elements.toTypedArray()
         }
 
+        fun resolveReference(ref: CuteRef): PsiElement? {
+            val jsFile = JSChangeUtil.createJSFileFromText(ref.project, ref.text, null)
+            val exprStatement = jsFile.firstChild as? JSExpressionStatementImpl ?: return null
+            val refExpr = exprStatement.firstChild as? JSReferenceExpressionImpl ?: return null
+
+            return resolveJSReference(refExpr)?.mapNotNull { it.element }?.firstOrNull()
+        }
+
         fun getAllNamespaces(project: Project): MutableCollection<String> {
             return FileBasedIndex.getInstance().getAllKeys(TEMPLATE_CACHE_INDEX, project)
         }
 
-        fun findNamespaceGeneratedDeclaration(expression: JSReferenceExpressionImpl): Array<ResolveResult> {
-            val jsResolveResults = JSResolveUtil.resolve(expression.containingFile, expression, object : JSReferenceExpressionResolver(expression, false) {
-                override fun resolveFromProviders(): Array<ResolveResult>? = null
-            }, false)
-
-            return jsResolveResults
-                    .filter { it.element?.containingFile?.name?.endsWith(GENERATED_EXTENSION) == true }
-                    .toTypedArray()
+        fun resolveJSReferenceInGenerated(expression: JSReferenceExpressionImpl): Array<ResolveResult> {
+            return resolveJSReference(expression)
+                    ?.filter { it.element?.containingFile?.name?.endsWith(GENERATED_EXTENSION) == true }
+                    ?.toTypedArray() ?: emptyArray()
         }
 
         fun findNamespaceDeclaration(project: Project, namespace: String): CuteNamespace? {
@@ -74,6 +80,12 @@ class CuteResolveUtil {
                     .firstOrNull() ?: return null
             val cuteFile = PsiManager.getInstance(project).findFile(virtualFile) as? CuteFile ?: return null
             return cuteFile.templateNamespace()
+        }
+
+        private fun resolveJSReference(expression: JSReferenceExpressionImpl): Array<out ResolveResult>? {
+            return JSResolveUtil.resolve(expression.containingFile, expression, object : JSReferenceExpressionResolver(expression, false) {
+                override fun resolveFromProviders(): Array<ResolveResult>? = null
+            }, false)
         }
     }
 }
