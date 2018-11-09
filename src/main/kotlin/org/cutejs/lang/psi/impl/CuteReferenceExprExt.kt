@@ -2,8 +2,7 @@ package org.cutejs.lang.psi.impl
 
 import com.intellij.extapi.psi.ASTWrapperPsiElement
 import com.intellij.lang.ASTNode
-import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiNameIdentifierOwner
+import com.intellij.psi.*
 import org.cutejs.lang.psi.CuteElementFactory
 
 open class CuteReferenceExprExt(node: ASTNode) : ASTWrapperPsiElement(node), PsiNameIdentifierOwner {
