@@ -12,7 +12,7 @@ class CuteJSNamespaceReference(element: PsiElement) : PsiReferenceBase<PsiElemen
         val templateDeclaration = arrayOf(PsiElementResolveResult(namespace.ref) as ResolveResult)
         val expression = element as? JSReferenceExpressionImpl ?: return templateDeclaration
 
-        return templateDeclaration.plus(CuteResolveUtil.findNamespaceGeneratedDeclaration(expression))
+        return templateDeclaration.plus(CuteResolveUtil.resolveJSReferenceInGenerated(expression))
     }
 
     override fun getVariants(): Array<Any> = emptyArray()
