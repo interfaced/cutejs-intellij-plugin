@@ -1,0 +1,12 @@
+{{ any content between
+    double curly braces
+    should between
+    parsed as js block token
+}}{{ var foo = (a, b) => {return `a + ${a - b}`}; }}
+{{ const bar = foo(1, 2).forEach(function(str) {
+	return str.substr(1, str.length);
+}); }}
+
+{{ while (foo != null) {
+	var baz = foo();
+} }}
