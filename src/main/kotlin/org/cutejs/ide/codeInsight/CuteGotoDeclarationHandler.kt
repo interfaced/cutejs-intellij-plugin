@@ -11,10 +11,6 @@ import org.cutejs.lang.psi.CuteTypes.T_IDENTIFIER
 import org.cutejs.lang.psi.impl.*
 
 class CuteGotoDeclarationHandler : GotoDeclarationHandler {
-    override fun getActionText(p0: DataContext?): String? {
-        return null
-    }
-
     override fun getGotoDeclarationTargets(element: PsiElement?, p1: Int, editor: Editor?): Array<PsiElement>? {
         val ref = getParentOfType(element, CuteRefImpl::class.java)
         val isChildOfExport = getParentOfType(element, CuteExportArgsImpl::class.java) != null
