@@ -36,10 +36,6 @@ class CuteHighlightVisitor : CuteVisitor(), HighlightVisitor {
         }
     }
 
-    override fun visitTypedef(element: CuteTypedef) {
-        highlightProperty(element.thisProperty.lastChild)
-    }
-
     override fun visit(element: PsiElement) {
         element.accept(this)
     }
