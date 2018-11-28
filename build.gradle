@@ -17,7 +17,7 @@ plugins {
 }
 
 group 'org.cutejs'
-version '1.0.0-alpha.1'
+version '1.0.0-alpha2'
 
 apply plugin: 'kotlin'
 apply plugin: 'org.jetbrains.grammarkit'
@@ -55,15 +55,10 @@ intellij {
 
 patchPluginXml {
     changeNotes """
-      Features:<br>
       <ul>
-        <li>Syntax highlighting</li>
-        <li>Blocks folding</li>
-        <li>Go-to-declaration by references in template</li>
-        <li>Line-marker for template references (with ability to go-to template)</li>
+        <li>Update platform compatibility (2018.3)</li>
+        <li>Support for defining type of whole input parameter (#22)</li>
       </ul>
-      
-      <a href="https://github.com/interfaced/cutejs-intellij-plugin">More info ...</a>
       """
 }
 
