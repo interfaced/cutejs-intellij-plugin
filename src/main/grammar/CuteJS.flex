@@ -43,7 +43,10 @@ Comma = ","
 ArraySpecifier = {LBrack}{RBrack}
 IncludeClose = {Comma}{WhiteSpace}*{Identifier}{ArraySpecifier}?{WhiteSpace}*{Close}
 
-%state EXPRESSION_START, EXPRESSION, INCLUDE, INCLUDE_INPUT, INCLUDE_CLOSE_CHECK, TYPEDEF, DOC_TYPE, EVAL, EVAL_EXPRESSION
+%state EXPRESSION_START, EXPRESSION
+%state INCLUDE, INCLUDE_INPUT, INCLUDE_CLOSE_CHECK
+%state TYPEDEF, TYPEDEF_ATTRIBUTE, DOC_TYPE
+%state EVAL, EVAL_EXPRESSION
 %%
 
 <YYINITIAL> {Open} { yybegin(EXPRESSION_START); return T_OPEN; }
@@ -73,12 +76,15 @@ IncludeClose = {Comma}{WhiteSpace}*{Identifier}{ArraySpecifier}?{WhiteSpace}*{Cl
 <EVAL_EXPRESSION> ~{Close} { yypushback(2); yybegin(EXPRESSION); return T_EVAL_EXPRESSION; }
 
 <TYPEDEF> {
-    {This} { return T_THIS; }
+    {This} { yybegin(TYPEDEF_ATTRIBUTE); return T_THIS; }
+}
+<TYPEDEF_ATTRIBUTE> {
+    {WhiteSpace}+ { yybegin(DOC_TYPE); return WHITE_SPACE; }
     {Identifier} { yybegin(DOC_TYPE); return T_IDENTIFIER; }
 }
 <DOC_TYPE> ~{Close} { yypushback(2); yybegin(EXPRESSION); return T_DOC_TYPE; }
 
-<EXPRESSION, INCLUDE, TYPEDEF> {
+<EXPRESSION, INCLUDE, TYPEDEF, TYPEDEF_ATTRIBUTE> {
     {Comma} { return T_COMMA; }
     {Dot} { return T_DOT; }
     {This} { return T_THIS; }

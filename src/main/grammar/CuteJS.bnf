@@ -47,7 +47,7 @@ expression ::= import|escape|interpolate|typedef|namespace|export|partial|inline
 import      ::= '+' 'eval'
 escape      ::= '-' 'eval_expr'
 interpolate ::= '=' 'eval_expr'
-typedef     ::= '*' this_property '[]'? 'type'
+typedef     ::= '*' this_property 'type'
 namespace   ::= '$' ref
 export      ::= '@' export_args
 partial     ::= '#' include_args
@@ -55,7 +55,7 @@ inline      ::= '%' include_args
 
 include_args ::= ref ',' 'eval_expr' ',' export_args
 export_args ::= 'ident' '[]'?
-this_property ::= 'this' '.' 'ident'
+this_property ::= 'this' [ '.' export_args ]
 
 expr ::= member_ref_expr | identifier_ref_expr
 
