@@ -23,6 +23,7 @@ open class CuteFileType : LanguageFileType(CuteLanguage.INSTANCE) {
     }
 
     companion object {
+        @JvmField
         val INSTANCE = CuteFileType()
     }
 }
