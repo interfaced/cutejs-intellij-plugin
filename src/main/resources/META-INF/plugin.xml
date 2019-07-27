@@ -20,8 +20,8 @@
     <depends>JavaScript</depends>
 
     <extensions defaultExtensionNs="com.intellij">
+        <fileType name="CuteTemplate file" implementationClass="org.cutejs.lang.CuteFileType" fieldName="INSTANCE" language="CuteTemplate" extensions="jst"/>
         <fileBasedIndex implementation="org.cutejs.index.CuteTemplateCacheIndex"/>
-        <fileTypeFactory implementation="org.cutejs.lang.CuteFileTypeFactory"/>
         <xml.attributeDescriptorsProvider implementation="org.cutejs.ide.codeInsight.CuteAttributeDescriptorsProvider"/>
         <lang.parserDefinition language="CuteTemplate" implementationClass="org.cutejs.lang.parser.CuteParserDefinition"/>
         <lang.parserDefinition language="CuteJS" implementationClass="org.cutejs.lang.parser.CuteJSParserDefinition"/>
