@@ -1,9 +1,15 @@
 buildscript {
-    ext.kotlin_version = '1.3.0'
+    ext.kotlin_version = '1.3.72'
 
     repositories {
         mavenCentral()
         maven { url 'https://jitpack.io'}
+        maven {
+            url "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+        maven {
+            url 'https://dl.bintray.com/jetbrains/intellij-plugin-service'
+        }
     }
 
     dependencies {
@@ -12,15 +18,15 @@ buildscript {
 }
 
 plugins {
-    id 'org.jetbrains.intellij' version "0.3.12"
-    id "org.jetbrains.grammarkit" version "2018.2"
+    id "org.jetbrains.intellij" version "0.4.18"
+    id "org.jetbrains.grammarkit" version "2020.1.2"
 }
 
 group 'org.cutejs'
-version '1.0.0-alpha2'
+version '1.0.4'
 
 apply plugin: 'kotlin'
-apply plugin: 'org.jetbrains.grammarkit'
+apply plugin: 'org.jetbrains.intellij'
 
 sourceSets {
     all {
@@ -41,23 +47,22 @@ repositories {
 }
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: '1.3.72'
     testCompile group: 'junit', name: 'junit', version: '4.12'
-    implementation fileTree(dir: '/Applications/WebStorm.app/Contents/plugins/JavaScriptLanguage/lib', include: ['JavaScriptLanguage.jar', 'javascript-openapi.jar'])
+    implementation fileTree(dir: '/opt/webstorm/plugins/JavaScriptLanguage/lib', include: ['JavaScriptLanguage.jar', 'javascript-openapi.jar', 'resources_en.jar', 'js-test-common.jar'])
 }
 
 intellij {
-    version '2018.3'
-    alternativeIdePath = '/Applications/WebStorm.app'
+    version '2020.1'
+    alternativeIdePath = '/opt/webstorm'
     downloadSources = false
-    plugins = ['PsiViewer:183.2153']
+    pluginName = 'cutejs-intellij-plugin'
 }
 
 patchPluginXml {
     changeNotes """
       <ul>
-        <li>Update platform compatibility (2018.3)</li>
-        <li>Support for defining type of whole input parameter (#22)</li>
+        <li>Support for 2020.1</li>
       </ul>
       """
 }

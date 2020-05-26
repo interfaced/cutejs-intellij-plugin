@@ -1,32 +1,27 @@
 <idea-plugin>
     <id>com.interfaced.cutejs.plugin.support</id>
     <name>CuteJS</name>
-    <version>1.0.0-alpha2</version>
-    <vendor email="reefridge@interfaced.tv" url="http://interfaced.tv">Interfaced</vendor>
+    <vendor email="info@interfaced.tv" url="http://interfaced.tv">Interfaced</vendor>
 
     <description><![CDATA[
-      CuteJS Template engine support.
-
-      Features:<br>
+      <strong>CuteJS Template engine support.</strong>
+      <br/>
+      Features:
       <ul>
         <li>Syntax highlighting</li>
         <li>Blocks folding</li>
         <li>Go-to-declaration by references in template</li>
         <li>Line-marker for template references (with ability to go-to template)</li>
       </ul>
-
       <a href="https://github.com/interfaced/cutejs-intellij-plugin">More info ...</a>
     ]]></description>
 
-    <change-notes></change-notes>
-
-    <idea-version since-build="173.0"/>
     <depends>com.intellij.modules.lang</depends>
     <depends>JavaScript</depends>
 
     <extensions defaultExtensionNs="com.intellij">
+        <fileType name="CuteTemplate" implementationClass="org.cutejs.lang.CuteFileType" fieldName="INSTANCE" language="CuteTemplate" extensions="jst"/>
         <fileBasedIndex implementation="org.cutejs.index.CuteTemplateCacheIndex"/>
-        <fileTypeFactory implementation="org.cutejs.lang.CuteFileTypeFactory"/>
         <xml.attributeDescriptorsProvider implementation="org.cutejs.ide.codeInsight.CuteAttributeDescriptorsProvider"/>
         <lang.parserDefinition language="CuteTemplate" implementationClass="org.cutejs.lang.parser.CuteParserDefinition"/>
         <lang.parserDefinition language="CuteJS" implementationClass="org.cutejs.lang.parser.CuteJSParserDefinition"/>
