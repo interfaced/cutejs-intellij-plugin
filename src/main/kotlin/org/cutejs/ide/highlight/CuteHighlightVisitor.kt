@@ -47,8 +47,6 @@ class CuteHighlightVisitor : CuteVisitor(), HighlightVisitor {
         return true
     }
 
-    override fun visitWhiteSpace(space: PsiWhiteSpace?) {}
-
     override fun clone(): HighlightVisitor = CuteHighlightVisitor()
 
     override fun suitableForFile(file: PsiFile): Boolean = file is CuteFile
