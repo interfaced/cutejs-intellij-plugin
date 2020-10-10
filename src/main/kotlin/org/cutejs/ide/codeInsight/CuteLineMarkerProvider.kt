@@ -9,7 +9,7 @@ import org.cutejs.ide.icons.CuteIcons
 import org.cutejs.lang.psi.CuteResolveUtil
 
 class CuteLineMarkerProvider : RelatedItemLineMarkerProvider() {
-    override fun collectNavigationMarkers(element: PsiElement, result: MutableCollection<in RelatedItemLineMarkerInfo<PsiElement>>) {
+    override fun collectNavigationMarkers(element: PsiElement, result: MutableCollection<in RelatedItemLineMarkerInfo<*>>) {
          if (element is JSReferenceExpression) {
              val text = element.text
              val project = element.project
