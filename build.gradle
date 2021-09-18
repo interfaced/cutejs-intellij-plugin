@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = '1.3.72'
+    ext.kotlin_version = '1.5.30'
 
     repositories {
         mavenCentral()
@@ -18,12 +18,12 @@ buildscript {
 }
 
 plugins {
-    id "org.jetbrains.intellij" version "0.5.0"
-    id "org.jetbrains.grammarkit" version "2020.2.1"
+    id "org.jetbrains.intellij" version "1.1.6"
+    id "org.jetbrains.grammarkit" version "2021.1.3"
 }
 
 group 'org.cutejs'
-version '1.0.5'
+version '1.0.7'
 
 apply plugin: 'kotlin'
 apply plugin: 'org.jetbrains.intellij'
@@ -39,7 +39,7 @@ sourceSets {
 sourceCompatibility = 1.8
 
 grammarKit {
-    jflexRelease = '1.7.0'
+    jflexRelease = "1.7.0-1"
 }
 
 repositories {
@@ -47,25 +47,26 @@ repositories {
 }
 
 dependencies {
-    compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: '1.3.72'
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    implementation fileTree(dir: '/opt/webstorm/plugins/JavaScriptLanguage/lib', include: ['JavaScriptLanguage.jar', 'javascript-openapi.jar', 'resources_en.jar', 'js-test-common.jar'])
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
+    compileOnly fileTree(dir: '<path-to-idea-with-js-support>/plugins/JavaScriptLanguage/lib', include: ['JavaScriptLanguage.jar', 'javascript-openapi.jar', 'resources_en.jar', 'js-test-common.jar'])
 }
 
 intellij {
-    version '2020.2'
-    alternativeIdePath = '/opt/webstorm'
+    version = '2021.2'
+    runIde { ideDir = file('<path-to-idea-with-js-support>') }
     downloadSources = false
     pluginName = 'cutejs-intellij-plugin'
 }
 
 patchPluginXml {
-    changeNotes """
+    changeNotes = """
       <ul>
-        <li>Support for 2020.2</li>
+    <li>Support for 2021.2</li>
       </ul>
       """
 }
+
+apply plugin: 'org.jetbrains.grammarkit'
 
 import org.jetbrains.grammarkit.tasks.*
 

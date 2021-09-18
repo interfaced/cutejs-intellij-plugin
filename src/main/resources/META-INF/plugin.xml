@@ -34,6 +34,15 @@
         <highlightVisitor implementation="org.cutejs.ide.highlight.CuteHighlightVisitor"/>
         <stubElementTypeHolder class="org.cutejs.lang.CuteElementTypes"/>
         <codeInsight.lineMarkerProvider language="JavaScript" implementationClass="org.cutejs.ide.codeInsight.CuteLineMarkerProvider"/>
+        <lang.ast.factory language="CuteTemplate"
+                          implementationClass="org.cutejs.lang.psi.CuteAstFactory"/>
+        <!-- Override default unused imports inspection -->
+        <lang.inspectionSuppressor language="CuteJS" implementationClass="org.cutejs.lang.CuteJSInspectionSuppressor"/>
+        <localInspection language="CuteJS" shortName="CuteJSUnusedImports"
+                         groupName="CuteJS"
+                         displayName="CuteJS Unused imports"
+                         enabledByDefault="true"
+                         level="WARNING" implementationClass="org.cutejs.ide.inspection.CuteJSUnusedImportsInspection"/>
     </extensions>
 
     <extensions defaultExtensionNs="JavaScript">
