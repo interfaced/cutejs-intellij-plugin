@@ -15,6 +15,7 @@ import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.search.ProjectScope
 import com.intellij.util.indexing.FileBasedIndex
 import org.cutejs.index.CuteTemplateCacheIndex.Companion.TEMPLATE_CACHE_INDEX
+import com.intellij.psi.util.PsiTreeUtil
 
 class CuteResolveUtil {
     companion object {
@@ -58,7 +59,7 @@ class CuteResolveUtil {
             val exprStatement = jsFile.firstChild as? JSExpressionStatementImpl ?: return null
             val refExpr = exprStatement.firstChild as? JSReferenceExpressionImpl ?: return null
 
-            return resolveJSReference(refExpr)?.mapNotNull { it.element }?.firstOrNull()
+            return resolveJSReference(refExpr).mapNotNull { it.element }.firstOrNull()
         }
 
         fun findNamespaceDeclaration(project: Project, namespace: String): CuteNamespace? {
@@ -72,7 +73,7 @@ class CuteResolveUtil {
             return cuteFile.templateNamespace()
         }
 
-        private fun resolveJSReference(expression: JSReferenceExpressionImpl): Array<out ResolveResult>? {
+        private fun resolveJSReference(expression: JSReferenceExpressionImpl): Array<out ResolveResult> {
             return JSResolveUtil.resolve(expression.containingFile, expression, object : JSReferenceExpressionResolver(expression, false) {
                 override fun resolveFromProviders(): Array<ResolveResult>? = null
             }, false)
