@@ -44,18 +44,19 @@ private item_ ::= 'outer'|statement|data
 statement ::= '{{' expression? '}}'
 expression ::= import|escape|interpolate|typedef|namespace|export|partial|inline|'eval'
 
-import      ::= '+' 'eval'
-escape      ::= '-' 'eval_expr'
-interpolate ::= '=' 'eval_expr'
+import      ::= '+' 'eval' {pin(".*")=1}
+escape      ::= '-' 'eval_expr' {pin(".*")=1}
+interpolate ::= '=' 'eval_expr' {pin(".*")=1}
 typedef     ::= '*' this_property 'type'
 namespace   ::= '$' ref
-export      ::= '@' export_args
-partial     ::= '#' include_args
-inline      ::= '%' include_args
+export      ::= '@' export_args {pin(".*")=1}
+partial     ::= '#' include_args {pin(".*")=1}
+inline      ::= '%' include_args {pin(".*")=1}
 
-include_args ::= ref ',' 'eval_expr' ',' export_args
+include_args ::= ref ',' 'eval_expr' include_export? {pin(".*")=1}
+include_export ::= ',' export_args {pin(".*")=1}
 export_args ::= 'ident' '[]'?
-this_property ::= 'this' [ '.' export_args ]
+this_property ::= 'this' [ '.' export_args ] {pin(".*")=1}
 
 expr ::= member_ref_expr | identifier_ref_expr
 
