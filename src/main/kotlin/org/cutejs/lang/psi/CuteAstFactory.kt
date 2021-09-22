@@ -7,7 +7,7 @@ import com.intellij.psi.tree.IElementType
 
 class CuteAstFactory : DefaultASTFactoryImpl() {
     override fun createLeaf(type: IElementType, text: CharSequence): LeafElement {
-        if (type is CuteTokenType) {
+        if (arrayOf(CuteTypes.T_DATA, CuteTypes.T_OUTER_DATA, CuteTypes.T_EVAL, CuteTypes.T_EVAL_EXPRESSION).contains(type)) {
             return OuterLanguageElementImpl(type, text)
         }
         return super.createLeaf(type, text)

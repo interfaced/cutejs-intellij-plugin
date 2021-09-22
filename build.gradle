@@ -54,7 +54,7 @@ dependencies {
 intellij {
     version = '2021.2'
     runIde { ideDir = file('/opt/phpstorm') }
-    downloadSources = false
+    downloadSources = true
     pluginName = 'cutejs-intellij-plugin'
     plugins = ['PsiViewer:212-SNAPSHOT']
 }
