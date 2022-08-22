@@ -1,15 +1,8 @@
 buildscript {
-    ext.kotlin_version = '1.5.30'
+    ext.kotlin_version = '1.7.10'
 
     repositories {
         mavenCentral()
-        maven { url 'https://jitpack.io'}
-        maven {
-            url "https://oss.sonatype.org/content/repositories/snapshots/"
-        }
-        maven {
-            url 'https://dl.bintray.com/jetbrains/intellij-plugin-service'
-        }
     }
 
     dependencies {
@@ -18,12 +11,15 @@ buildscript {
 }
 
 plugins {
-    id "org.jetbrains.intellij" version "1.1.6"
-    id "org.jetbrains.grammarkit" version "2021.1.3"
+    id "org.jetbrains.intellij" version "1.8.0"
+    id "org.jetbrains.grammarkit" version "2021.2.2"
 }
 
 group 'org.cutejs'
-version '1.1.0'
+version '1.1.1'
+
+sourceCompatibility = "11"
+targetCompatibility = "11"
 
 apply plugin: 'kotlin'
 apply plugin: 'org.jetbrains.intellij'
@@ -35,8 +31,6 @@ sourceSets {
         resources.srcDirs = ['src/main/resources']
     }
 }
-
-sourceCompatibility = 1.8
 
 grammarKit {
     jflexRelease = "1.7.0-1"
@@ -52,39 +46,41 @@ dependencies {
 }
 
 intellij {
-    version = '2021.2'
+    version = '2022.2'
     runIde { ideDir = file('/opt/phpstorm') }
     downloadSources = true
     pluginName = 'cutejs-intellij-plugin'
-    plugins = ['PsiViewer:212-SNAPSHOT']
+    plugins = ['PsiViewer:222-SNAPSHOT']
 }
 
 patchPluginXml {
+	sinceBuild = "203"
     changeNotes = """
       <ul>
-        <li>Some improvements for lexer and parser.</li>
+        <li>Support for 2022.2 Intellij platform.</li>
       </ul>
       """
 }
 
+
 apply plugin: 'org.jetbrains.grammarkit'
 
-import org.jetbrains.grammarkit.tasks.*
+import org.jetbrains.grammarkit.tasks.GenerateLexerTask
+import org.jetbrains.grammarkit.tasks.GenerateParserTask
 
 def GENERATE_GROUP = 'Generate'
 
-task generateLexer(type: GenerateLexer) {
+task generateCuteJSLexer(type: GenerateLexerTask) {
     source = "src/main/grammar/CuteJS.flex"
     targetDir = "src/main/gen/org/cutejs/lang/lexer"
     targetClass = "_CuteLexer"
-    skeleton = "src/main/grammar/idea-flex.skeleton"
     purgeOldFiles = true
 
     description = 'Generate Lexer Java sources for CuteJS'
     group = GENERATE_GROUP
 }
 
-task generateParser(type: GenerateParser) {
+task generateCuteJSParser(type: GenerateParserTask) {
     source = "src/main/grammar/CuteJS.bnf"
     targetRoot = 'src/main/gen'
     pathToParser = 'src/main/gen/org/cutejs/lang/CuteParser.java'
@@ -99,6 +95,14 @@ task generateParser(type: GenerateParser) {
 }
 
 compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = "11"
 }
-compileKotlin.dependsOn(generateLexer, generateParser)
+compileJava {
+    dependsOn generateCuteJSLexer
+    dependsOn generateCuteJSParser
+}
+
+compileKotlin {
+    dependsOn generateCuteJSLexer
+    dependsOn generateCuteJSParser
+}
