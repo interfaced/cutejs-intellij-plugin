@@ -4,6 +4,6 @@ import com.intellij.openapi.util.IconLoader
 
 class CuteIcons {
     companion object {
-        val ICON = IconLoader.getIcon("/icons/jst-file.svg")
+        val ICON = IconLoader.getIcon("/icons/jst-file.svg", CuteIcons::class.java)
     }
 }

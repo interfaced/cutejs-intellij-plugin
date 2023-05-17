@@ -15,8 +15,8 @@ class CuteJSUnusedImportsInspection : ES6UnusedImportsInspection() {
         val originalVisitor = super.createVisitor(holder, session) as JSElementVisitor
 
         return object : JSElementVisitor() {
-            override fun visitES6ImportDeclaration(importDeclaration: ES6ImportDeclaration?) {
-                val cuteFile = importDeclaration?.containingFile?.viewProvider?.allFiles?.find { it is CuteFile }
+            override fun visitES6ImportDeclaration(importDeclaration: ES6ImportDeclaration) {
+                val cuteFile = importDeclaration.containingFile?.viewProvider?.allFiles?.find { it is CuteFile }
                 if (cuteFile == null) {
                     originalVisitor.visitES6ImportDeclaration(importDeclaration)
                     return

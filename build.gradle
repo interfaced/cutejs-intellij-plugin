@@ -11,15 +11,15 @@ buildscript {
 }
 
 plugins {
-    id "org.jetbrains.intellij" version "1.8.0"
-    id "org.jetbrains.grammarkit" version "2021.2.2"
+    id "org.jetbrains.intellij" version "1.13.3"
+    id "org.jetbrains.grammarkit" version "2022.3.1"
 }
 
 group 'org.cutejs'
-version '1.1.1'
+version '1.1.2'
 
-sourceCompatibility = "11"
-targetCompatibility = "11"
+sourceCompatibility = "17"
+targetCompatibility = "17"
 
 apply plugin: 'kotlin'
 apply plugin: 'org.jetbrains.intellij'
@@ -41,23 +41,23 @@ repositories {
 }
 
 dependencies {
-    testImplementation group: 'junit', name: 'junit', version: '4.12'
-    compileOnly fileTree(dir: '/opt/phpstorm/plugins/JavaScriptLanguage/lib', include: ['JavaScriptLanguage.jar', 'javascript-openapi.jar', 'resources_en.jar', 'js-test-common.jar'])
+    testImplementation group: 'junit', name: 'junit', version: '4.13.1'
+    compileOnly fileTree(dir: '/opt/phpstorm/plugins/javascript-impl/lib', include: ['javascript-impl.jar', 'javascript-openapi.jar', 'resources_en.jar', 'js-test-common.jar'])
 }
 
 intellij {
-    version = '2022.2'
+    version = '2023.1'
     runIde { ideDir = file('/opt/phpstorm') }
     downloadSources = true
     pluginName = 'cutejs-intellij-plugin'
-    plugins = ['PsiViewer:222-SNAPSHOT']
+    plugins = ['PsiViewer:231-SNAPSHOT']
 }
 
 patchPluginXml {
-	sinceBuild = "203"
+	sinceBuild = "231"
     changeNotes = """
       <ul>
-        <li>Support for 2022.2 Intellij platform.</li>
+        <li>Support for 2023.1 Intellij platform.</li>
       </ul>
       """
 }
@@ -71,8 +71,8 @@ import org.jetbrains.grammarkit.tasks.GenerateParserTask
 def GENERATE_GROUP = 'Generate'
 
 task generateCuteJSLexer(type: GenerateLexerTask) {
-    source = "src/main/grammar/CuteJS.flex"
-    targetDir = "src/main/gen/org/cutejs/lang/lexer"
+    sourceFile = file('src/main/grammar/CuteJS.flex')
+    targetDir = 'src/main/gen/org/cutejs/lang/lexer'
     targetClass = "_CuteLexer"
     purgeOldFiles = true
 
@@ -81,7 +81,7 @@ task generateCuteJSLexer(type: GenerateLexerTask) {
 }
 
 task generateCuteJSParser(type: GenerateParserTask) {
-    source = "src/main/grammar/CuteJS.bnf"
+    sourceFile = file('src/main/grammar/CuteJS.bnf')
     targetRoot = 'src/main/gen'
     pathToParser = 'src/main/gen/org/cutejs/lang/CuteParser.java'
     pathToPsiRoot = 'src/main/gen/org/cutejs/lang/psi'
@@ -95,7 +95,7 @@ task generateCuteJSParser(type: GenerateParserTask) {
 }
 
 compileKotlin {
-    kotlinOptions.jvmTarget = "11"
+    kotlinOptions.jvmTarget = "17"
 }
 compileJava {
     dependsOn generateCuteJSLexer
