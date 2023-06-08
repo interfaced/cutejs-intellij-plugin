@@ -16,7 +16,7 @@ plugins {
 }
 
 group 'org.cutejs'
-version '1.1.2'
+version '1.1.2-223'
 
 sourceCompatibility = "17"
 targetCompatibility = "17"
@@ -46,18 +46,17 @@ dependencies {
 }
 
 intellij {
-    version = '2023.1'
+    version = '2022.3'
     runIde { ideDir = file('/opt/phpstorm') }
     downloadSources = true
     pluginName = 'cutejs-intellij-plugin'
-    plugins = ['PsiViewer:231-SNAPSHOT']
 }
 
 patchPluginXml {
-	sinceBuild = "231"
+	sinceBuild = "223"
     changeNotes = """
       <ul>
-        <li>Support for 2023.1 Intellij platform.</li>
+        <li>Support for 2022.3 Intellij platform.</li>
       </ul>
       """
 }
